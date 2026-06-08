@@ -20,9 +20,12 @@ import { registerBasicBlocks } from "@n-ramos/celebrimbor-blocks-basic";
 import { PageRenderer } from "@n-ramos/celebrimbor-editor-react";
 import { definePageBuilderElement } from "@n-ramos/celebrimbor-editor-element";
 
+import { testimonialBlock } from "./blocks/testimonial";
+
 import "@n-ramos/celebrimbor-editor-element/styles.css";
 
 const registry = registerBasicBlocks(createBlockRegistry());
+registry.register(testimonialBlock); // example custom block
 
 // --- Editor element -------------------------------------------------------
 definePageBuilderElement({ registry });
