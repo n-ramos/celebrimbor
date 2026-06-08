@@ -6,6 +6,11 @@ const r = (...segments: string[]) => resolve(__dirname, ...segments);
 
 export default defineConfig({
   plugins: [react()],
+  // Library builds don't replace process.env.NODE_ENV, which React reads at
+  // runtime -> "process is not defined" in the browser. Pin it to production.
+  define: {
+    "process.env.NODE_ENV": JSON.stringify("production"),
+  },
   resolve: {
     // One React instance for the editor renderer AND the blocks.
     dedupe: ["react", "react-dom"],
