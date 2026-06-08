@@ -1,18 +1,48 @@
-import { useMemo, useState } from "react";
-import { Code2, Eye, Monitor, Smartphone } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Code2, Eye, Monitor, RefreshCw, Smartphone } from "lucide-react";
 import type { BlockRegistry, PageDocument } from "@n-ramos/celebrimbor-core";
 import { PageRenderer } from "../renderer/page-renderer";
 import { PortableJsonPanel } from "./portable-json-panel";
 
+/** postMessage payload sent to a server-rendered preview iframe. */
+export const PREVIEW_MESSAGE_TYPE = "celebrimbor:preview";
+
 type PreviewFrameProps = {
   document: PageDocument;
   registry: BlockRegistry;
+  previewUrl?: string | undefined;
 };
 
-export function PreviewFrame({ document, registry }: PreviewFrameProps) {
+export function PreviewFrame({ document, registry, previewUrl }: PreviewFrameProps) {
   const previewKey = useMemo(() => JSON.stringify(document), [document]);
   const [tab, setTab] = useState<"preview" | "json">("preview");
   const [viewport, setViewport] = useState<"mobile" | "desktop">("desktop");
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+
+  // Push the live document to the server-rendered preview iframe.
+  useEffect(() => {
+    if (!previewUrl) {
+      return;
+    }
+    iframeRef.current?.contentWindow?.postMessage(
+      { type: PREVIEW_MESSAGE_TYPE, document },
+      "*",
+    );
+  }, [previewUrl, previewKey, document]);
+
+  function postDocumentToPreview() {
+    iframeRef.current?.contentWindow?.postMessage(
+      { type: PREVIEW_MESSAGE_TYPE, document },
+      "*",
+    );
+  }
+
+  function refreshPreview() {
+    const frame = iframeRef.current;
+    if (frame) {
+      frame.src = frame.src;
+    }
+  }
 
   return (
     <div className="flex min-h-full flex-col bg-slate-100">
@@ -25,6 +55,17 @@ export function PreviewFrame({ document, registry }: PreviewFrameProps) {
           <h2 className="mt-1 text-2xl font-semibold tracking-tight text-slate-950">Rendu & sortie JSON</h2>
         </div>
         <div className="flex items-center gap-3">
+          {previewUrl && tab === "preview" ? (
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-xl bg-slate-100 px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 transition hover:text-slate-950"
+              onClick={refreshPreview}
+              title="Recharger la preview serveur"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Recharger
+            </button>
+          ) : null}
           <div className="rounded-2xl bg-slate-100 p-1">
             <button
               type="button"
@@ -87,9 +128,19 @@ export function PreviewFrame({ document, registry }: PreviewFrameProps) {
                   viewport === "mobile" ? "max-w-[390px]" : "max-w-none"
                 }`}
               >
-                <div key={previewKey} className="min-h-[820px] bg-white">
-                  <PageRenderer document={document} registry={registry} />
-                </div>
+                {previewUrl ? (
+                  <iframe
+                    ref={iframeRef}
+                    src={previewUrl}
+                    title="Preview"
+                    className="min-h-[820px] w-full bg-white"
+                    onLoad={postDocumentToPreview}
+                  />
+                ) : (
+                  <div key={previewKey} className="min-h-[820px] bg-white">
+                    <PageRenderer document={document} registry={registry} />
+                  </div>
+                )}
               </div>
             </div>
           </div>

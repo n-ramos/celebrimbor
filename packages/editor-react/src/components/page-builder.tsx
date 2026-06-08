@@ -52,7 +52,7 @@ export function PageBuilder(props: PageBuilderProps) {
             onDuplicate={builder.duplicate}
             onToggleVisibility={builder.toggleVisibility}
           />
-          <PreviewFrame document={props.document} registry={props.registry} />
+          <PreviewFrame document={props.document} registry={props.registry} previewUrl={props.previewUrl} />
         </div>
       </DndContext>
     </div>

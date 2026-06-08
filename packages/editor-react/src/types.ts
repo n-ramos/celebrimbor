@@ -11,6 +11,12 @@ export type PageBuilderProps = {
   storage?: PageBuilderStorage | undefined;
   assetPicker?: AssetPickerAdapter | undefined;
   selectedBlockId?: string | undefined;
+  /**
+   * When set, the preview pane embeds this URL in an iframe (server-rendered
+   * preview) and posts the live document to it via postMessage, instead of the
+   * built-in client renderer.
+   */
+  previewUrl?: string | undefined;
   onChange: (document: PageDocument) => void;
   onSave?: ((document: PageDocument) => Promise<void>) | undefined;
   onSelectBlock?: ((blockId?: string) => void) | undefined;

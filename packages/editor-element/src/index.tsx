@@ -17,6 +17,10 @@ export type PageBuilderElementOptions = {
   assetPicker?: AssetPickerAdapter | undefined;
   onSave?: ((document: PageDocument) => Promise<void>) | undefined;
   createInitialDocument?: (() => PageDocument) | undefined;
+  /** URL embedded in the preview pane for a server-rendered preview. */
+  previewUrl?: string | undefined;
+  /** Submit the enclosing host <form> when the editor saves. Default: true. */
+  submitOnSave?: boolean | undefined;
   tagName?: string | undefined;
 };
 
@@ -27,7 +31,7 @@ export type PageBuilderElementChangeDetail = {
 };
 
 export class PageBuilderElement extends HTMLElement {
-  static observedAttributes = ["format", "name", "value"];
+  static observedAttributes = ["format", "name", "value", "preview-url", "submit-on-save"];
 
   static defaultOptions?: RuntimeOptions;
 
@@ -70,6 +74,11 @@ export class PageBuilderElement extends HTMLElement {
     if (name === "value") {
       this.#pageDocument = parseDocument(newValue, this.#createInitialDocument());
       this.#syncHiddenInput();
+      this.#render();
+      return;
+    }
+
+    if (name === "preview-url" || name === "submit-on-save") {
       this.#render();
     }
   }
@@ -157,12 +166,36 @@ export class PageBuilderElement extends HTMLElement {
     this.#render();
   }
 
+  get previewUrl(): string | undefined {
+    return (
+      this.#runtimeOptions.previewUrl ??
+      this.getAttribute("preview-url") ??
+      this.#defaults().previewUrl
+    );
+  }
+
+  set previewUrl(value: string | undefined) {
+    if (value === undefined) {
+      delete this.#runtimeOptions.previewUrl;
+    } else {
+      this.#runtimeOptions.previewUrl = value;
+    }
+    this.#render();
+  }
+
   get value() {
     return this.#serializeValue(this.#getDocument());
   }
 
   set value(nextValue: string) {
     this.setAttribute("value", nextValue);
+  }
+
+  #shouldSubmitOnSave(): boolean {
+    if (this.getAttribute("submit-on-save") === "false") {
+      return false;
+    }
+    return this.#runtimeOptions.submitOnSave ?? this.#defaults().submitOnSave ?? true;
   }
 
   #createInitialDocument() {
@@ -217,12 +250,24 @@ export class PageBuilderElement extends HTMLElement {
 
   #handleSave = async (document: PageDocument) => {
     const save = this.onSave ?? this.storage?.save?.bind(this.storage);
-    if (!save) {
-      return;
+    if (save) {
+      await save(document);
     }
 
-    await save(document);
     this.#dispatch("my-page-builder:save", document);
+
+    // Framework-agnostic: trigger the enclosing host <form> submit. In a plain
+    // HTML form it POSTs; in Livewire/Filament it triggers wire:submit; in a
+    // React/Vue host the form's submit handler fires. No form -> rely on the
+    // my-page-builder:save event above.
+    if (this.#shouldSubmitOnSave()) {
+      const form = this.closest("form");
+      if (form && typeof form.requestSubmit === "function") {
+        form.requestSubmit();
+      } else {
+        form?.submit();
+      }
+    }
   };
 
   #render() {
@@ -250,7 +295,8 @@ export class PageBuilderElement extends HTMLElement {
         assetPicker={this.assetPicker}
         document={this.#getDocument()}
         onChange={this.#handleChange}
-        onSave={this.onSave || this.storage?.save ? this.#handleSave : undefined}
+        onSave={this.#handleSave}
+        previewUrl={this.previewUrl}
         registry={registry}
         storage={this.storage}
       />,
@@ -287,8 +333,10 @@ export function definePageBuilderElement(options: PageBuilderElementOptions) {
       assetPicker: options.assetPicker,
       createInitialDocument: options.createInitialDocument,
       onSave: options.onSave,
+      previewUrl: options.previewUrl,
       registry: options.registry,
       storage: options.storage,
+      submitOnSave: options.submitOnSave,
     } satisfies RuntimeOptions;
   }
 
