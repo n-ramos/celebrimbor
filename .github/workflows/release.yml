@@ -1,0 +1,56 @@
+name: Release (npm)
+
+# Publishes @n-ramos/celebrimbor-embed to npm when you push a version tag.
+#
+#   1. Bump the version in apps/embed/package.json (e.g. 0.1.0 -> 0.1.1)
+#   2. git commit + git tag v0.1.1 && git push --tags
+#   3. This workflow builds the bundle and publishes it — no OTP, no local publish.
+#
+# Auth is the npm Automation token stored as the NPM_TOKEN repo secret (it
+# bypasses 2FA, which is why CI never prompts for an OTP). Create it at
+# npmjs.com -> Access Tokens -> Granular/Automation, write access to @n-ramos.
+#
+# `workflow_dispatch` lets you re-run a publish manually from the Actions tab.
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+jobs:
+  publish-embed:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    # Note: npm provenance (verified "Published from GitHub Actions") needs a
+    # PUBLIC repo. This repo is private, so it's off. If you make the repo public,
+    # add `id-token: write` above and `NPM_CONFIG_PROVENANCE: "true"` to the
+    # publish step's env.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # `prepublishOnly` (pnpm build) rebuilds the bundle from source before
+      # packing, so the published dist always matches the tagged commit.
+      # --no-git-checks is required: a tag checkout is a detached HEAD, which
+      # pnpm's default publish git checks would reject.
+      - name: Publish @n-ramos/celebrimbor-embed
+        run: pnpm --filter @n-ramos/celebrimbor-embed publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
