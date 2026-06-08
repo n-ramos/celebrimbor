@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@n-ramos/core": ["packages/core/src/index.ts"],
+      "@n-ramos/editor-react": ["packages/editor-react/src/index.ts"],
+      "@n-ramos/blocks-basic": ["packages/blocks/basic/src/index.ts"],
+      "@n-ramos/adapter-rest": ["packages/adapters/rest/src/index.ts"],
+      "@n-ramos/adapter-local-storage": ["packages/adapters/local-storage/src/index.ts"],
+      "@n-ramos/adapter-laravel-filament": ["packages/adapters/laravel-filament/src/index.ts"]
+    }
+  },
+  "include": ["packages/**/*.ts", "packages/**/*.tsx", "apps/**/*.ts", "apps/**/*.tsx"]
+}

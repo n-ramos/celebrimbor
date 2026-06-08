@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Filament\Forms\Components;
+
+use Filament\Forms\Components\Field;
+
+class VisualPageBuilderField extends Field
+{
+    protected string $view = 'filament.forms.components.visual-page-builder-field';
+
+    public function blocksPreset(string $preset): static
+    {
+        return $this->extraAttributes([
+            'data-blocks-preset' => $preset,
+        ]);
+    }
+}

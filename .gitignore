@@ -1,0 +1,12 @@
+node_modules
+dist
+.turbo
+storybook-static
+coverage
+.DS_Store
+
+# tooling / local artifacts
+.code-review-graph
+.claude/settings.local.json
+work
+*.swp
