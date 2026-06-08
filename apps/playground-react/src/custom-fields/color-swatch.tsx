@@ -5,10 +5,10 @@ const DEFAULT_SWATCHES = ["#0ea5e9", "#6366f1", "#10b981", "#f59e0b", "#ef4444",
 /**
  * Exemple de champ `custom`: une palette de pastilles de couleur.
  * Branche cote editeur via `customFields={{ "color-swatch": ColorSwatchField }}`.
- * Lit ses presets dans `field.options` (ici reutilise comme liste de couleurs).
+ * Lit ses presets dans `field.options.presets`.
  */
 export const ColorSwatchField: CustomFieldComponent = ({ field, value, onChange }) => {
-  const swatches = (field.options as string[] | undefined) ?? DEFAULT_SWATCHES;
+  const swatches = (field.options?.presets as string[] | undefined) ?? DEFAULT_SWATCHES;
   const current = typeof value === "string" ? value : "";
 
   return (

@@ -82,8 +82,12 @@ function defaultForField(field: PrimitiveField | ObjectField | CustomField): unk
   if (field.type === "object") {
     // Les enfants `row`/`tabs` sont aplatis: leurs cles vivent au meme niveau.
     return flattenDataFields(field.fields).reduce<RecordValue>((accumulator, child) => {
-      accumulator[child.name] =
-        child.type === "array" ? [] : defaultForField(child as PrimitiveField | ObjectField | CustomField);
+      if (child.type === "array") {
+        accumulator[child.name] =
+          child.defaultValue !== undefined ? structuredClone(child.defaultValue) : [];
+      } else {
+        accumulator[child.name] = defaultForField(child as PrimitiveField | ObjectField | CustomField);
+      }
       return accumulator;
     }, {});
   }

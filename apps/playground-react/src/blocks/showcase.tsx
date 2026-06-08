@@ -52,7 +52,13 @@ export const showcaseBlock = defineBlock({
           {
             label: "Apparence",
             fields: [
-              { name: "accent", type: "custom", label: "Couleur d'accent", component: "color-swatch" },
+              {
+                name: "accent",
+                type: "custom",
+                label: "Couleur d'accent",
+                component: "color-swatch",
+                options: { presets: ["#6366f1", "#0ea5e9", "#10b981", "#f59e0b", "#ef4444", "#0f172a"] },
+              },
               { name: "size", type: "range", label: "Taille du titre", min: 16, max: 64, step: 1, defaultValue: 28 },
               {
                 type: "row",
