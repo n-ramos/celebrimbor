@@ -43,6 +43,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # The embed bundle aliases workspace JS to source, but imports the compiled
+      # editor-element/dist/styles.css (Tailwind built via editor-react). So the
+      # dependency packages must be built first — `pnpm -r build` runs them in
+      # topological order (editor-react -> editor-element -> ... -> embed).
+      - name: Build workspace packages
+        run: pnpm -r build
+
       # Publish from the package directory, not via `--filter`: pnpm's recursive/
       # filtered publish does a registry version check that can wrongly decide
       # "no new packages should be published". A direct publish always runs.
