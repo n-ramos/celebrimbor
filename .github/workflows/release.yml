@@ -23,10 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    # Note: npm provenance (verified "Published from GitHub Actions") needs a
-    # PUBLIC repo. This repo is private, so it's off. If you make the repo public,
-    # add `id-token: write` above and `NPM_CONFIG_PROVENANCE: "true"` to the
-    # publish step's env.
+      id-token: write # npm provenance — verified "Published from GitHub Actions"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -54,3 +51,4 @@ jobs:
         run: pnpm --filter @n-ramos/celebrimbor-embed publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
