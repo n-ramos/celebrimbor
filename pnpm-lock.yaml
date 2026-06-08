@@ -57,6 +57,34 @@ importers:
         specifier: ^3.2.4
         version: 3.2.6(@types/node@24.13.1)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(yaml@2.9.0)
 
+  apps/embed:
+    dependencies:
+      '@n-ramos/celebrimbor-blocks-basic':
+        specifier: workspace:*
+        version: link:../../packages/blocks/basic
+      '@n-ramos/celebrimbor-core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@n-ramos/celebrimbor-editor-element':
+        specifier: workspace:*
+        version: link:../../packages/editor-element
+      '@n-ramos/celebrimbor-editor-react':
+        specifier: workspace:*
+        version: link:../../packages/editor-react
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^4.5.2
+        version: 4.7.0(vite@6.4.3(@types/node@24.13.1)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0))
+      react:
+        specifier: ^19.1.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.1.0
+        version: 19.2.7(react@19.2.7)
+      vite:
+        specifier: ^6.3.5
+        version: 6.4.3(@types/node@24.13.1)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0)
+
   apps/playground-react:
     dependencies:
       '@n-ramos/celebrimbor-adapter-local-storage':
