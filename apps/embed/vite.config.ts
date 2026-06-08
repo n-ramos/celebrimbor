@@ -26,8 +26,11 @@ export default defineConfig({
   build: {
     lib: {
       entry: r("src/main.ts"),
-      formats: ["es"],
-      fileName: () => "celebrimbor.js",
+      // `es` for npm `import` / `<script type="module">`; `iife` for a drop-in
+      // `<script src>` (CDN, Filament render hook) without `type=module`.
+      formats: ["es", "iife"],
+      name: "Celebrimbor",
+      fileName: (format) => (format === "iife" ? "celebrimbor.iife.js" : "celebrimbor.js"),
     },
     outDir: r("dist"),
     cssCodeSplit: false,

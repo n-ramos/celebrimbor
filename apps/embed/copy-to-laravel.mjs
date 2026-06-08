@@ -23,7 +23,7 @@ if (!target) {
 const outDir = resolve(target, "vendor/celebrimbor");
 mkdirSync(outDir, { recursive: true });
 
-for (const file of ["celebrimbor.js", "celebrimbor.css"]) {
+for (const file of ["celebrimbor.js", "celebrimbor.iife.js", "celebrimbor.css"]) {
   const from = resolve(dist, file);
   if (!existsSync(from)) {
     console.warn(`Skipped ${file} (not found — did the build emit it?)`);

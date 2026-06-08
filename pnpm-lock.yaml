@@ -58,7 +58,7 @@ importers:
         version: 3.2.6(@types/node@24.13.1)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(yaml@2.9.0)
 
   apps/embed:
-    dependencies:
+    devDependencies:
       '@n-ramos/celebrimbor-blocks-basic':
         specifier: workspace:*
         version: link:../../packages/blocks/basic
@@ -71,7 +71,6 @@ importers:
       '@n-ramos/celebrimbor-editor-react':
         specifier: workspace:*
         version: link:../../packages/editor-react
-    devDependencies:
       '@vitejs/plugin-react':
         specifier: ^4.5.2
         version: 4.7.0(vite@6.4.3(@types/node@24.13.1)(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0))

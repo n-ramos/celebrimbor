@@ -1,20 +1,35 @@
 {
   "name": "@n-ramos/celebrimbor-embed",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "description": "Standalone bundle that registers the <my-page-builder> web component with the basic block library, for embedding in non-React hosts (e.g. a Laravel/Filament admin).",
+  "license": "MIT",
+  "sideEffects": true,
+  "main": "./dist/celebrimbor.js",
+  "module": "./dist/celebrimbor.js",
+  "unpkg": "./dist/celebrimbor.iife.js",
+  "jsdelivr": "./dist/celebrimbor.iife.js",
+  "exports": {
+    ".": "./dist/celebrimbor.js",
+    "./iife": "./dist/celebrimbor.iife.js",
+    "./styles.css": "./dist/celebrimbor.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "vite build",
-    "build:laravel": "vite build && node ./copy-to-laravel.mjs"
+    "build:laravel": "vite build && node ./copy-to-laravel.mjs",
+    "prepublishOnly": "pnpm build"
   },
-  "dependencies": {
+  "devDependencies": {
     "@n-ramos/celebrimbor-blocks-basic": "workspace:*",
     "@n-ramos/celebrimbor-core": "workspace:*",
     "@n-ramos/celebrimbor-editor-element": "workspace:*",
-    "@n-ramos/celebrimbor-editor-react": "workspace:*"
-  },
-  "devDependencies": {
+    "@n-ramos/celebrimbor-editor-react": "workspace:*",
     "@vitejs/plugin-react": "^4.5.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
