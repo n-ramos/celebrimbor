@@ -6,8 +6,8 @@ import {
   removeBlock,
   toggleBlockVisibility,
   updateBlock,
-} from "@n-ramos/core";
-import type { BlockDefinition, PageDocument } from "@n-ramos/core";
+} from "@n-ramos/celebrimbor-core";
+import type { BlockDefinition, PageDocument } from "@n-ramos/celebrimbor-core";
 import type { PageBuilderProps } from "../types";
 
 export function usePageBuilder({
@@ -112,6 +112,6 @@ export function usePageBuilder({
   };
 }
 
-function flattenBlocks(block: import("@n-ramos/core").PageBlock): import("@n-ramos/core").PageBlock[] {
+function flattenBlocks(block: import("@n-ramos/celebrimbor-core").PageBlock): import("@n-ramos/celebrimbor-core").PageBlock[] {
   return [block, ...(block.children?.flatMap(flattenBlocks) ?? [])];
 }

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { createBlockRegistry, createDocument } from "@n-ramos/core";
-import { PageRenderer } from "@n-ramos/editor-react";
+import { createBlockRegistry, createDocument } from "@n-ramos/celebrimbor-core";
+import { PageRenderer } from "@n-ramos/celebrimbor-editor-react";
 import { basicBlocks, registerBasicBlocks } from "..";
 
 const registry = registerBasicBlocks(createBlockRegistry());

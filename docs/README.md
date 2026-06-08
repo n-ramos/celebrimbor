@@ -32,11 +32,11 @@ Si tu decouvres le projet:
 
 ## Packages concernes
 
-- `@n-ramos/core`
+- `@n-ramos/celebrimbor-core`
   Types, document model, registry, operations, serialization.
-- `@n-ramos/editor-react`
+- `@n-ramos/celebrimbor-editor-react`
   Builder React, sidebar, preview, `SchemaForm`, renderer.
-- `@n-ramos/page-builder-element`
+- `@n-ramos/celebrimbor-editor-element`
   Emballage web component pour embarquer le builder dans n'importe quelle page HTML.
-- `@n-ramos/blocks-basic`
+- `@n-ramos/celebrimbor-blocks-basic`
   Exemples de blocs concrets a relire avant de creer ta propre librairie.

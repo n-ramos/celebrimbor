@@ -1,5 +1,5 @@
 {
-  "name": "@n-ramos/adapter-rest",
+  "name": "@n-ramos/celebrimbor-adapter-rest",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@n-ramos/core": "workspace:*"
+    "@n-ramos/celebrimbor-core": "workspace:*"
   },
   "devDependencies": {
     "tsup": "^8.5.0"

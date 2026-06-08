@@ -1,4 +1,4 @@
-# API du coeur (`@n-ramos/core`)
+# API du coeur (`@n-ramos/celebrimbor-core`)
 
 Le package `core` est headless : aucune dependance React, Vue, DOM ou Laravel. Il expose le modele de document, les operations immutables, le registry de blocs, la validation, l'historique, le bus d'evenements et un moteur de rendu abstrait.
 
@@ -66,7 +66,7 @@ registry.setUnknownBlockFactory(createUnknownBlockDefinition);
 Pour distribuer des blocs charges a la demande, `registerBlockManifest(registry, entries)` enregistre chaque entree comme bloc lazy (idempotent). `createBlockCatalog(entries)` fournit un listing (`entries`, `get`, `byCategory`, `search`) exploitable par une UI **avant** tout chargement.
 
 ```ts
-import { createBlockCatalog, registerBlockManifest } from "@n-ramos/core";
+import { createBlockCatalog, registerBlockManifest } from "@n-ramos/celebrimbor-core";
 
 const manifest = [
   { type: "promo", label: "Promo", category: "Marketing", load: () => import("./promo").then((m) => m.promoBlock) },
@@ -94,7 +94,7 @@ Seules les issues de severite `error` (defaut quand `severity` est absent) rende
 Pour eviter de declarer deux fois la forme du contenu, `schemaToZod(fields)` derive un schema Zod a partir des `fields` (source unique de verite) :
 
 ```ts
-import { schemaToZod, withGeneratedZodSchema } from "@n-ramos/core";
+import { schemaToZod, withGeneratedZodSchema } from "@n-ramos/celebrimbor-core";
 
 const schema = { fields };
 schema.zodSchema = schemaToZod(fields);
@@ -121,7 +121,7 @@ Mapping : champs texte -> `string` (`.min(1)` si `required`), `number`/`boolean`
 `renderDocumentToHtml(doc, registry, options?)` produit une **chaine HTML sans dependance React ni DOM** (rendu cote serveur). Pour chaque bloc, le renderer est resolu dans l'ordre : `options.renderers[type]` -> `definition.renderHtml` -> `options.fallback` -> repli generique (`<div data-block-type>`).
 
 ```ts
-import { renderDocumentToHtml, escapeHtml } from "@n-ramos/core";
+import { renderDocumentToHtml, escapeHtml } from "@n-ramos/celebrimbor-core";
 
 const html = renderDocumentToHtml(document, registry, {
   renderers: {
@@ -137,7 +137,7 @@ Une definition de bloc peut aussi porter directement un `renderHtml: ({ block, c
 `defineTemplate({ name, label, category?, create })` decrit une fabrique de document. `createTemplateRegistry()` expose `register`/`get`/`has`/`all`/`byCategory`/`instantiate`. `instantiate(name)` renvoie un nouveau `PageDocument` clone a chaque appel.
 
 ```ts
-import { createTemplateRegistry, defineTemplate, createDocument } from "@n-ramos/core";
+import { createTemplateRegistry, defineTemplate, createDocument } from "@n-ramos/celebrimbor-core";
 
 const templates = createTemplateRegistry([
   defineTemplate({ name: "landing", label: "Landing", create: () => createDocument({ title: "Landing" }) }),

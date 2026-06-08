@@ -1,5 +1,5 @@
 {
-  "name": "@n-ramos/page-builder-element",
+  "name": "@n-ramos/celebrimbor-editor-element",
   "version": "0.1.0",
   "type": "module",
   "exports": {
@@ -22,8 +22,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@n-ramos/core": "workspace:*",
-    "@n-ramos/editor-react": "workspace:*",
+    "@n-ramos/celebrimbor-core": "workspace:*",
+    "@n-ramos/celebrimbor-editor-react": "workspace:*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

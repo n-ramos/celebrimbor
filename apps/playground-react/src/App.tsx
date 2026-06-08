@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import { createDocument, createBlockRegistry } from "@n-ramos/core";
-import { PageBuilder } from "@n-ramos/editor-react";
-import { basicBlocks, registerBasicBlocks } from "@n-ramos/blocks-basic";
-import { createLocalStorageAdapter } from "@n-ramos/adapter-local-storage";
+import { createDocument, createBlockRegistry } from "@n-ramos/celebrimbor-core";
+import { PageBuilder } from "@n-ramos/celebrimbor-editor-react";
+import { basicBlocks, registerBasicBlocks } from "@n-ramos/celebrimbor-blocks-basic";
+import { createLocalStorageAdapter } from "@n-ramos/celebrimbor-adapter-local-storage";
 
 const storage = createLocalStorageAdapter({ keyPrefix: "my-page-builder-playground" });
 

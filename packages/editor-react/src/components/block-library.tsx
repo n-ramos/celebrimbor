@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useDraggable } from "@dnd-kit/core";
-import type { BlockDefinition, BlockRegistry } from "@n-ramos/core";
+import type { BlockDefinition, BlockRegistry } from "@n-ramos/celebrimbor-core";
 
 type BlockLibraryProps = {
   registry: BlockRegistry;

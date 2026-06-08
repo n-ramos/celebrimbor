@@ -4,7 +4,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     alias: {
-      "@n-ramos/core": resolve(__dirname, "../core/src/index.ts"),
+      "@n-ramos/celebrimbor-core": resolve(__dirname, "../core/src/index.ts"),
     },
   },
   test: {

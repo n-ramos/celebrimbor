@@ -3,7 +3,7 @@ import type {
   BlockRegistry,
   PageBuilderStorage,
   PageDocument,
-} from "@n-ramos/core";
+} from "@n-ramos/celebrimbor-core";
 
 export type PageBuilderProps = {
   document: PageDocument;
@@ -18,7 +18,7 @@ export type PageBuilderProps = {
 
 export type SchemaFormProps<TValue = Record<string, unknown>> = {
   schema: {
-    fields: import("@n-ramos/core").BlockField[];
+    fields: import("@n-ramos/celebrimbor-core").BlockField[];
   };
   value: TValue;
   onChange: (value: TValue) => void;
@@ -28,5 +28,5 @@ export type SchemaFormProps<TValue = Record<string, unknown>> = {
    * sont relatifs a `value` (ex. `title`, `items.0.question`). Permet une
    * validation a la frappe quand le parent recalcule a chaque `onChange`.
    */
-  issues?: import("@n-ramos/core").ValidationIssue[] | undefined;
+  issues?: import("@n-ramos/celebrimbor-core").ValidationIssue[] | undefined;
 };

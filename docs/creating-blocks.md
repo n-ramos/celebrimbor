@@ -14,7 +14,7 @@ Ce guide explique comment concevoir un bloc de bout en bout:
 Un bloc est defini avec `defineBlock`.
 
 ```ts
-import { defineBlock } from "@n-ramos/core";
+import { defineBlock } from "@n-ramos/celebrimbor-core";
 
 export const myBlock = defineBlock({
   type: "hero",
@@ -136,7 +136,7 @@ Decrit les options de presentation.
 
 ### `render`
 
-Transforme le bloc en sortie React dans `@n-ramos/blocks-basic` ou dans ton propre package de renderers.
+Transforme le bloc en sortie React dans `@n-ramos/celebrimbor-blocks-basic` ou dans ton propre package de renderers.
 
 ### `supportsChildren`
 
@@ -155,7 +155,7 @@ Le model `PageBlock` supporte deja `children`, mais ton UI et ton renderer doive
 ## Exemple 1: bloc simple
 
 ```ts
-import { defineBlock } from "@n-ramos/core";
+import { defineBlock } from "@n-ramos/celebrimbor-core";
 
 export const announcementBlock = defineBlock({
   type: "announcement",
@@ -189,7 +189,7 @@ export const announcementBlock = defineBlock({
 ## Exemple 2: bloc avec settings
 
 ```ts
-import { defineBlock } from "@n-ramos/core";
+import { defineBlock } from "@n-ramos/celebrimbor-core";
 
 export const quoteBlock = defineBlock({
   type: "quote",
@@ -248,7 +248,7 @@ export const quoteBlock = defineBlock({
 ## Exemple 3: bloc repeatable
 
 ```ts
-import { defineBlock } from "@n-ramos/core";
+import { defineBlock } from "@n-ramos/celebrimbor-core";
 
 export const featuresBlock = defineBlock({
   type: "features",
@@ -315,7 +315,7 @@ export const featuresBlock = defineBlock({
 ## Exemple 4: bloc media
 
 ```ts
-import { defineBlock } from "@n-ramos/core";
+import { defineBlock } from "@n-ramos/celebrimbor-core";
 
 export const mediaCardBlock = defineBlock({
   type: "media-card",
@@ -414,7 +414,7 @@ validate(content) {
 ## Enregistrer un bloc dans le registry
 
 ```ts
-import { createBlockRegistry } from "@n-ramos/core";
+import { createBlockRegistry } from "@n-ramos/celebrimbor-core";
 import { myBlock } from "./my-block";
 
 const registry = createBlockRegistry();
@@ -458,7 +458,7 @@ Les operations immutables du core permettent de gerer les blocs proprement.
 ### Ajouter a la racine
 
 ```ts
-import { addBlock } from "@n-ramos/core";
+import { addBlock } from "@n-ramos/celebrimbor-core";
 
 const nextDocument = addBlock(document, heroBlock);
 ```
@@ -480,7 +480,7 @@ const nextDocument = addBlock(document, childBlock, {
 
 ## Rendu et responsabilites
 
-Dans ce repo, les blocs de `@n-ramos/blocks-basic` rendent du React.
+Dans ce repo, les blocs de `@n-ramos/celebrimbor-blocks-basic` rendent du React.
 
 Mais l'architecture reste headless:
 

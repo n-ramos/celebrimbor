@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { BlockRegistry, PageBlock, PageDocument } from "@n-ramos/core";
+import type { BlockRegistry, PageBlock, PageDocument } from "@n-ramos/celebrimbor-core";
 
 export type PageRendererProps = {
   document: PageDocument;

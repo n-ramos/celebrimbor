@@ -1,7 +1,7 @@
 import type { ReactElement, ReactNode } from "react";
 import { isValidElement } from "react";
 import { describe, expect, it } from "vitest";
-import { createBlockFromDefinition } from "@n-ramos/core";
+import { createBlockFromDefinition } from "@n-ramos/celebrimbor-core";
 import { basicBlocks } from "../src";
 
 /**

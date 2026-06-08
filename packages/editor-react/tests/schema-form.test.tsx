@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { BlockField } from "@n-ramos/core";
+import type { BlockField } from "@n-ramos/celebrimbor-core";
 import { SchemaForm } from "../src";
 
 afterEach(cleanup);

@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { createDocument, defineBlock, type PageDocument } from "@n-ramos/core";
+import { createDocument, defineBlock, type PageDocument } from "@n-ramos/celebrimbor-core";
 import { usePageBuilder } from "../src";
 
 const heroDef = defineBlock({

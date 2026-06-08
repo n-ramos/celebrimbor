@@ -227,7 +227,7 @@ VisualPageBuilderField::make('document')
 
 ## Ce que fait le bridge Laravel fourni
 
-Le package `@n-ramos/adapter-laravel-filament` fournit deux briques:
+Le package `@n-ramos/celebrimbor-adapter-laravel-filament` fournit deux briques:
 
 ### `createLaravelAssetPicker`
 
@@ -240,7 +240,7 @@ Permet de synchroniser le builder avec le canal de ton champ Filament / Livewire
 Exemple conceptuel:
 
 ```ts
-import { mountFilamentBridge, createLaravelAssetPicker } from "@n-ramos/adapter-laravel-filament";
+import { mountFilamentBridge, createLaravelAssetPicker } from "@n-ramos/celebrimbor-adapter-laravel-filament";
 
 const assetPicker = createLaravelAssetPicker({
   endpoint: "/admin/page-builder/assets/pick",

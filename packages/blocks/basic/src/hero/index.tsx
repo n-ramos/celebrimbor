@@ -1,4 +1,4 @@
-import { defineBlock } from "@n-ramos/core";
+import { defineBlock } from "@n-ramos/celebrimbor-core";
 import { Section } from "../shared/render-helpers";
 
 export const heroBlock = defineBlock({

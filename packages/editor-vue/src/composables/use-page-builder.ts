@@ -9,7 +9,7 @@ import {
   type BlockDefinition,
   type PageBlock,
   type PageDocument,
-} from "@n-ramos/core";
+} from "@n-ramos/celebrimbor-core";
 
 function flatten(block: PageBlock): PageBlock[] {
   return [block, ...(block.children?.flatMap(flatten) ?? [])];

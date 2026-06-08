@@ -5,7 +5,7 @@ Le projet a deux formats de sortie principaux:
 1. le `PageDocument` complet
 2. le JSON portable "flat block" inspire de `ciklik/visual-editor`
 
-Le web component `@n-ramos/page-builder-element` permet d'embarquer le builder hors React tout en gardant l'un ou l'autre de ces formats.
+Le web component `@n-ramos/celebrimbor-editor-element` permet d'embarquer le builder hors React tout en gardant l'un ou l'autre de ces formats.
 
 ## `PageDocument`
 
@@ -112,7 +112,7 @@ import {
   deserializeDocument,
   serializePortableDocument,
   deserializePortableDocument,
-} from "@n-ramos/core";
+} from "@n-ramos/celebrimbor-core";
 ```
 
 ### Serialiser le document complet
@@ -159,15 +159,15 @@ Choisis `document` si:
 
 ## Web component
 
-`@n-ramos/page-builder-element` emballe le builder React dans un custom element.
+`@n-ramos/celebrimbor-editor-element` emballe le builder React dans un custom element.
 
 ## Definition
 
 ```ts
-import "@n-ramos/page-builder-element/styles.css";
-import { createBlockRegistry } from "@n-ramos/core";
-import { registerBasicBlocks } from "@n-ramos/blocks-basic";
-import { definePageBuilderElement } from "@n-ramos/page-builder-element";
+import "@n-ramos/celebrimbor-editor-element/styles.css";
+import { createBlockRegistry } from "@n-ramos/celebrimbor-core";
+import { registerBasicBlocks } from "@n-ramos/celebrimbor-blocks-basic";
+import { definePageBuilderElement } from "@n-ramos/celebrimbor-editor-element";
 
 const registry = registerBasicBlocks(createBlockRegistry());
 

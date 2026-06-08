@@ -1,5 +1,5 @@
-import type { AssetPickerAdapter, BlockRegistry, PageBlock } from "@n-ramos/core";
-import { validateSchemaValue } from "@n-ramos/core";
+import type { AssetPickerAdapter, BlockRegistry, PageBlock } from "@n-ramos/celebrimbor-core";
+import { validateSchemaValue } from "@n-ramos/celebrimbor-core";
 import { SchemaForm } from "../forms/schema-form";
 
 type BlockInspectorProps = {

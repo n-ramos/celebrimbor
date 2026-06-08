@@ -1,4 +1,4 @@
-import type { BlockDefinition, BlockRegistry } from "@n-ramos/core";
+import type { BlockDefinition, BlockRegistry } from "@n-ramos/celebrimbor-core";
 import { columnsBlock } from "./columns";
 import { ctaBlock } from "./cta";
 import { faqBlock } from "./faq";

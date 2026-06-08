@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createBlockRegistry, validateBlock } from "@n-ramos/core";
+import { createBlockRegistry, validateBlock } from "@n-ramos/celebrimbor-core";
 import { basicBlocks, registerBasicBlocks } from "../src";
 
 describe("blocks-basic registration", () => {

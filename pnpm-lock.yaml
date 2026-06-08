@@ -59,16 +59,16 @@ importers:
 
   apps/playground-react:
     dependencies:
-      '@n-ramos/adapter-local-storage':
+      '@n-ramos/celebrimbor-adapter-local-storage':
         specifier: workspace:*
         version: link:../../packages/adapters/local-storage
-      '@n-ramos/blocks-basic':
+      '@n-ramos/celebrimbor-blocks-basic':
         specifier: workspace:*
         version: link:../../packages/blocks/basic
-      '@n-ramos/core':
+      '@n-ramos/celebrimbor-core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@n-ramos/editor-react':
+      '@n-ramos/celebrimbor-editor-react':
         specifier: workspace:*
         version: link:../../packages/editor-react
       react:
@@ -80,10 +80,10 @@ importers:
 
   packages/adapters/laravel-filament:
     dependencies:
-      '@n-ramos/core':
+      '@n-ramos/celebrimbor-core':
         specifier: workspace:*
         version: link:../../core
-      '@n-ramos/editor-react':
+      '@n-ramos/celebrimbor-editor-react':
         specifier: workspace:*
         version: link:../../editor-react
     devDependencies:
@@ -93,7 +93,7 @@ importers:
 
   packages/adapters/local-storage:
     dependencies:
-      '@n-ramos/core':
+      '@n-ramos/celebrimbor-core':
         specifier: workspace:*
         version: link:../../core
     devDependencies:
@@ -103,7 +103,7 @@ importers:
 
   packages/adapters/rest:
     dependencies:
-      '@n-ramos/core':
+      '@n-ramos/celebrimbor-core':
         specifier: workspace:*
         version: link:../../core
     devDependencies:
@@ -113,14 +113,14 @@ importers:
 
   packages/blocks/basic:
     dependencies:
-      '@n-ramos/core':
+      '@n-ramos/celebrimbor-core':
         specifier: workspace:*
         version: link:../../core
       react:
         specifier: ^19.1.0
         version: 19.2.7
     devDependencies:
-      '@n-ramos/editor-react':
+      '@n-ramos/celebrimbor-editor-react':
         specifier: workspace:*
         version: link:../../editor-react
       '@storybook/react':
@@ -145,10 +145,10 @@ importers:
 
   packages/editor-element:
     dependencies:
-      '@n-ramos/core':
+      '@n-ramos/celebrimbor-core':
         specifier: workspace:*
         version: link:../core
-      '@n-ramos/editor-react':
+      '@n-ramos/celebrimbor-editor-react':
         specifier: workspace:*
         version: link:../editor-react
       react:
@@ -179,7 +179,7 @@ importers:
       '@dnd-kit/utilities':
         specifier: ^3.2.2
         version: 3.2.2(react@19.2.7)
-      '@n-ramos/core':
+      '@n-ramos/celebrimbor-core':
         specifier: workspace:*
         version: link:../core
       lucide-react:
@@ -207,7 +207,7 @@ importers:
 
   packages/editor-vue:
     dependencies:
-      '@n-ramos/core':
+      '@n-ramos/celebrimbor-core':
         specifier: workspace:*
         version: link:../core
       vue:

@@ -1,6 +1,6 @@
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import type { BlockRegistry, PageDocument } from "@n-ramos/core";
+import type { BlockRegistry, PageDocument } from "@n-ramos/celebrimbor-core";
 import { BlockItem } from "../components/block-item";
 
 type BlockCanvasProps = {

@@ -13,17 +13,17 @@ Le cœur ne contient aucun PHP. Laravel et Filament ne sont présents que comme 
 
 Le projet sépare strictement les couches suivantes :
 
-1. `@n-ramos/core`
+1. `@n-ramos/celebrimbor-core`
    Types, document model, registry, validation, historique, événements, rendu abstrait, storage contract.
-2. `@n-ramos/editor-react`
+2. `@n-ramos/celebrimbor-editor-react`
    Builder React, canvas, inspector, renderer React et `SchemaForm`.
-3. `@n-ramos/page-builder-element`
+3. `@n-ramos/celebrimbor-editor-element`
    Custom element pour embarquer le builder dans n'importe quelle page HTML ou back-office.
-4. `@n-ramos/blocks-basic`
+4. `@n-ramos/celebrimbor-blocks-basic`
    Preset de blocs marketing fournis en exemple.
 5. `adapters`
    Branches de persistence et ponts d'intégration vers des environnements réels.
-6. `@n-ramos/editor-vue`
+6. `@n-ramos/celebrimbor-editor-vue`
    Éditeur Vue 3 fonctionnel (composable `usePageBuilder`, `SchemaForm`, `PageBuilder`, `PageRenderer`) réutilisant le core ; preview via le renderer HTML headless.
 
 ## Documentation developpeur
@@ -62,7 +62,7 @@ examples/
 
 ## Packages
 
-### `@n-ramos/core`
+### `@n-ramos/celebrimbor-core`
 
 Responsabilités :
 
@@ -86,7 +86,7 @@ Garanties :
 - blocs inconnus conservés sans perte
 - migrations de documents prévues
 
-### `@n-ramos/editor-react`
+### `@n-ramos/celebrimbor-editor-react`
 
 Composants principaux :
 
@@ -108,9 +108,9 @@ Fonctionnalités :
 - drag & drop de réordonnancement
 - recherche dans la librairie
 - fallback bloc inconnu
-- stylesheet Tailwind exportée via `@n-ramos/editor-react/styles.css`
+- stylesheet Tailwind exportée via `@n-ramos/celebrimbor-editor-react/styles.css`
 
-### `@n-ramos/page-builder-element`
+### `@n-ramos/celebrimbor-editor-element`
 
 Fonctionnalités :
 
@@ -119,9 +119,9 @@ Fonctionnalités :
 - synchronisation d'un champ cache JSON via l'attribut `name`
 - emission par defaut d'un tableau JSON portable a plat, inspire de `ciklik/visual-editor`
 - dispatch des événements `my-page-builder:change` et `my-page-builder:save`
-- stylesheet réexportée via `@n-ramos/page-builder-element/styles.css`
+- stylesheet réexportée via `@n-ramos/celebrimbor-editor-element/styles.css`
 
-### `@n-ramos/blocks-basic`
+### `@n-ramos/celebrimbor-blocks-basic`
 
 Blocs fournis :
 
@@ -142,11 +142,11 @@ Chaque bloc fournit :
 
 ### Adapters
 
-- `@n-ramos/adapter-local-storage`
+- `@n-ramos/celebrimbor-adapter-local-storage`
   Persistence navigateur simple pour sandbox et prototypage.
-- `@n-ramos/adapter-rest`
+- `@n-ramos/celebrimbor-adapter-rest`
   Adapter REST générique avec headers async.
-- `@n-ramos/adapter-laravel-filament`
+- `@n-ramos/celebrimbor-adapter-laravel-filament`
   Bridge JavaScript pour monter le builder dans un champ Filament et brancher un picker média Laravel.
 
 ## Format de document
@@ -173,9 +173,9 @@ export type PageBlock = {
 ## Exemple rapide
 
 ```ts
-import { createBlockRegistry, createDocument } from "@n-ramos/core";
-import { registerBasicBlocks } from "@n-ramos/blocks-basic";
-import { createLocalStorageAdapter } from "@n-ramos/adapter-local-storage";
+import { createBlockRegistry, createDocument } from "@n-ramos/celebrimbor-core";
+import { registerBasicBlocks } from "@n-ramos/celebrimbor-blocks-basic";
+import { createLocalStorageAdapter } from "@n-ramos/celebrimbor-adapter-local-storage";
 
 const registry = registerBasicBlocks(createBlockRegistry());
 const storage = createLocalStorageAdapter();
@@ -190,7 +190,7 @@ await storage.save(document);
 ```
 
 ```tsx
-import "@n-ramos/editor-react/styles.css";
+import "@n-ramos/celebrimbor-editor-react/styles.css";
 
 <PageBuilder
   document={document}
@@ -202,10 +202,10 @@ import "@n-ramos/editor-react/styles.css";
 ```
 
 ```ts
-import "@n-ramos/page-builder-element/styles.css";
-import { createBlockRegistry } from "@n-ramos/core";
-import { registerBasicBlocks } from "@n-ramos/blocks-basic";
-import { definePageBuilderElement } from "@n-ramos/page-builder-element";
+import "@n-ramos/celebrimbor-editor-element/styles.css";
+import { createBlockRegistry } from "@n-ramos/celebrimbor-core";
+import { registerBasicBlocks } from "@n-ramos/celebrimbor-blocks-basic";
+import { definePageBuilderElement } from "@n-ramos/celebrimbor-editor-element";
 
 const registry = registerBasicBlocks(createBlockRegistry());
 definePageBuilderElement({ registry });
@@ -253,7 +253,7 @@ La suite de tests (Vitest) couvre ~164 cas :
 ```bash
 pnpm test                                   # tout le monorepo
 pnpm test:coverage                          # avec rapport de couverture (v8)
-pnpm --filter @n-ramos/core test    # un seul package
+pnpm --filter @n-ramos/celebrimbor-core test    # un seul package
 ```
 
 L'intégration continue ([`.github/workflows/ci.yml`](./.github/workflows/ci.yml)) exécute `typecheck`, `test:coverage` et `build` sur chaque push/PR vers `main`.

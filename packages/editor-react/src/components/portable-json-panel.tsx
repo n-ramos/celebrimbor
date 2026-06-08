@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { serializePortableDocument, type PageDocument } from "@n-ramos/core";
+import { serializePortableDocument, type PageDocument } from "@n-ramos/celebrimbor-core";
 
 type PortableJsonPanelProps = {
   document: PageDocument;

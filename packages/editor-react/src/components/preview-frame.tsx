@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Code2, Eye, Monitor, Smartphone } from "lucide-react";
-import type { BlockRegistry, PageDocument } from "@n-ramos/core";
+import type { BlockRegistry, PageDocument } from "@n-ramos/celebrimbor-core";
 import { PageRenderer } from "../renderer/page-renderer";
 import { PortableJsonPanel } from "./portable-json-panel";
 

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import type { PageDocument } from "@n-ramos/core";
+import type { PageDocument } from "@n-ramos/celebrimbor-core";
 import { createLocalStorageAdapter } from "../src";
 
 function memoryStorage(): Storage {

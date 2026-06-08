@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { createBlockRegistry, defineBlock, type PortableBlock } from "@n-ramos/core";
+import { createBlockRegistry, defineBlock, type PortableBlock } from "@n-ramos/celebrimbor-core";
 import { definePageBuilderElement, PageBuilderElement } from "../src";
 
 const heroBlock = defineBlock({

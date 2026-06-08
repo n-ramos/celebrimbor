@@ -1,5 +1,5 @@
 {
-  "name": "@n-ramos/playground-react",
+  "name": "@n-ramos/celebrimbor-playground-react",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -11,10 +11,10 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@n-ramos/adapter-local-storage": "workspace:*",
-    "@n-ramos/blocks-basic": "workspace:*",
-    "@n-ramos/core": "workspace:*",
-    "@n-ramos/editor-react": "workspace:*",
+    "@n-ramos/celebrimbor-adapter-local-storage": "workspace:*",
+    "@n-ramos/celebrimbor-blocks-basic": "workspace:*",
+    "@n-ramos/celebrimbor-core": "workspace:*",
+    "@n-ramos/celebrimbor-editor-react": "workspace:*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   }

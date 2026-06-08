@@ -24,7 +24,7 @@ import type {
   BlockRegistry,
   PageBlock,
   PageDocument,
-} from "@n-ramos/core";
+} from "@n-ramos/celebrimbor-core";
 import { SchemaForm } from "../forms/schema-form";
 
 type BlocksSidebarProps = {

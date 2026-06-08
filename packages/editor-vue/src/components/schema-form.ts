@@ -5,7 +5,7 @@ import type {
   ObjectField,
   PrimitiveField,
   ValidationIssue,
-} from "@n-ramos/core";
+} from "@n-ramos/celebrimbor-core";
 
 type RecordValue = Record<string, unknown>;
 

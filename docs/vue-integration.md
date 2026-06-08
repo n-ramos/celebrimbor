@@ -1,6 +1,6 @@
-# Editeur Vue (`@n-ramos/editor-vue`)
+# Editeur Vue (`@n-ramos/celebrimbor-editor-vue`)
 
-Port Vue 3 de l'editeur, ecrit en render functions (`h()`, sans SFC) et reutilisant integralement `@n-ramos/core`. La preview s'appuie sur le renderer HTML headless du core, donc l'editeur Vue ne depend d'aucun renderer React.
+Port Vue 3 de l'editeur, ecrit en render functions (`h()`, sans SFC) et reutilisant integralement `@n-ramos/celebrimbor-core`. La preview s'appuie sur le renderer HTML headless du core, donc l'editeur Vue ne depend d'aucun renderer React.
 
 ## Exports
 
@@ -14,9 +14,9 @@ Port Vue 3 de l'editeur, ecrit en render functions (`h()`, sans SFC) et reutilis
 
 ```ts
 import { createApp, ref } from "vue";
-import { createBlockRegistry, createDocument } from "@n-ramos/core";
-import { registerBasicBlocks } from "@n-ramos/blocks-basic";
-import { PageBuilder } from "@n-ramos/editor-vue";
+import { createBlockRegistry, createDocument } from "@n-ramos/celebrimbor-core";
+import { registerBasicBlocks } from "@n-ramos/celebrimbor-blocks-basic";
+import { PageBuilder } from "@n-ramos/celebrimbor-editor-vue";
 
 const registry = registerBasicBlocks(createBlockRegistry());
 
@@ -34,7 +34,7 @@ createApp({
 }).mount("#app");
 ```
 
-> Remarque : les blocs de `@n-ramos/blocks-basic` fournissent un `render` **React**. Pour une preview Vue riche, ajoute un `renderHtml` a tes definitions (utilise par `PageRenderer` / `renderDocumentToHtml`) ; sinon le repli generique affiche un wrapper avec le texte du contenu.
+> Remarque : les blocs de `@n-ramos/celebrimbor-blocks-basic` fournissent un `render` **React**. Pour une preview Vue riche, ajoute un `renderHtml` a tes definitions (utilise par `PageRenderer` / `renderDocumentToHtml`) ; sinon le repli generique affiche un wrapper avec le texte du contenu.
 
 ## Limites actuelles
 

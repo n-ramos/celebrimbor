@@ -1,6 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { PageBlock } from "@n-ramos/core";
+import type { PageBlock } from "@n-ramos/celebrimbor-core";
 
 type BlockItemProps = {
   block: PageBlock;

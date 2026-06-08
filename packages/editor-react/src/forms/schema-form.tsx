@@ -23,7 +23,7 @@ import type {
   ObjectField,
   PrimitiveField,
   ValidationIssue,
-} from "@n-ramos/core";
+} from "@n-ramos/celebrimbor-core";
 import type { SchemaFormProps } from "../types";
 
 export function SchemaForm<TValue extends Record<string, unknown>>({

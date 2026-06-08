@@ -1,5 +1,5 @@
 import { computed, defineComponent, h, type PropType } from "vue";
-import type { BlockRegistry, PageDocument } from "@n-ramos/core";
+import type { BlockRegistry, PageDocument } from "@n-ramos/celebrimbor-core";
 import { usePageBuilder } from "../composables/use-page-builder";
 import { BlockInspector } from "./block-inspector";
 import { PageRenderer } from "./page-renderer";

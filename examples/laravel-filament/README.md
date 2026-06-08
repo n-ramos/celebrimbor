@@ -41,7 +41,7 @@ VisualPageBuilderField::make('document')
 
 ## Attentes côté Field
 
-- charger le bundle de `@n-ramos/editor-react`
+- charger le bundle de `@n-ramos/celebrimbor-editor-react`
 - injecter le JSON initial
 - écouter `onChange`
 - pousser les mises à jour vers Livewire

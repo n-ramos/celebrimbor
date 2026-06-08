@@ -1,11 +1,11 @@
 {
-  "name": "@n-ramos/page-builder",
+  "name": "@n-ramos/celebrimbor",
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@10.12.1",
   "scripts": {
     "build": "pnpm -r build",
-    "dev:playground-react": "pnpm --filter @n-ramos/playground-react dev",
+    "dev:playground-react": "pnpm --filter @n-ramos/celebrimbor-playground-react dev",
     "lint": "pnpm -r lint",
     "storybook": "storybook dev -p 6006",
     "test": "pnpm -r test",

@@ -1,5 +1,5 @@
 {
-  "name": "@n-ramos/adapter-laravel-filament",
+  "name": "@n-ramos/celebrimbor-adapter-laravel-filament",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -14,8 +14,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@n-ramos/core": "workspace:*",
-    "@n-ramos/editor-react": "workspace:*"
+    "@n-ramos/celebrimbor-core": "workspace:*",
+    "@n-ramos/celebrimbor-editor-react": "workspace:*"
   },
   "devDependencies": {
     "tsup": "^8.5.0"

@@ -8,8 +8,8 @@ import {
   deserializePortableDocument,
   serializePortableDocument,
   type PortableBlock,
-} from "@n-ramos/core";
-import { PageBuilder } from "@n-ramos/editor-react";
+} from "@n-ramos/celebrimbor-core";
+import { PageBuilder } from "@n-ramos/celebrimbor-editor-react";
 
 export type PageBuilderElementOptions = {
   registry: BlockRegistry;

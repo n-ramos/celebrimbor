@@ -4,7 +4,7 @@ import {
   type BlockRegistry,
   type HtmlRenderOptions,
   type PageDocument,
-} from "@n-ramos/core";
+} from "@n-ramos/celebrimbor-core";
 
 /**
  * Rendu du document en Vue via le renderer HTML headless du core. Comme le

@@ -51,7 +51,7 @@ const heroBlock = defineBlock({
   },
 });
 
-describe("@n-ramos/core", () => {
+describe("@n-ramos/celebrimbor-core", () => {
   it("registers blocks and creates a document", () => {
     const registry = createBlockRegistry([heroBlock]);
     const document = addBlock(createDocument(), heroBlock);

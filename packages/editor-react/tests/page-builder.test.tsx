@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { createBlockRegistry, createDocument, defineBlock } from "@n-ramos/core";
+import { createBlockRegistry, createDocument, defineBlock } from "@n-ramos/celebrimbor-core";
 import { PageBuilder } from "../src";
 
-describe("@n-ramos/editor-react", () => {
+describe("@n-ramos/celebrimbor-editor-react", () => {
   it("renders the builder shell and block library", () => {
     const registry = createBlockRegistry([
       defineBlock({

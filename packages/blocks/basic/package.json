@@ -1,5 +1,5 @@
 {
-  "name": "@n-ramos/blocks-basic",
+  "name": "@n-ramos/celebrimbor-blocks-basic",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -14,11 +14,11 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@n-ramos/core": "workspace:*",
+    "@n-ramos/celebrimbor-core": "workspace:*",
     "react": "^19.1.0"
   },
   "devDependencies": {
-    "@n-ramos/editor-react": "workspace:*",
+    "@n-ramos/celebrimbor-editor-react": "workspace:*",
     "@storybook/react": "^8.6.14",
     "@types/react": "^19.1.8",
     "tsup": "^8.5.0"

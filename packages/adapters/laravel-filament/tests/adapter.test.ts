@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { PageDocument } from "@n-ramos/core";
+import type { PageDocument } from "@n-ramos/celebrimbor-core";
 import { createLaravelAssetPicker, mountFilamentBridge } from "../src";
 
 describe("laravel asset picker", () => {

@@ -1,6 +1,6 @@
 # Fields et schemas
 
-Ce guide documente le systeme de fields utilise par `@n-ramos/core` et rendu par `SchemaForm` dans `@n-ramos/editor-react`.
+Ce guide documente le systeme de fields utilise par `@n-ramos/celebrimbor-core` et rendu par `SchemaForm` dans `@n-ramos/celebrimbor-editor-react`.
 
 L'objectif est simple:
 
@@ -23,7 +23,7 @@ Chaque zone est decrite par un `BlockSchema`.
 Exemple:
 
 ```ts
-import { defineBlock } from "@n-ramos/core";
+import { defineBlock } from "@n-ramos/celebrimbor-core";
 
 export const ctaBlock = defineBlock({
   type: "cta",
@@ -512,7 +512,7 @@ Le schema sert a decrire le form, mais la validation metier peut aller plus loin
 Exemple:
 
 ```ts
-import { defineBlock } from "@n-ramos/core";
+import { defineBlock } from "@n-ramos/celebrimbor-core";
 
 export const heroBlock = defineBlock({
   type: "hero",

@@ -6,7 +6,7 @@ import {
   createDocument,
   defineBlock,
   type PageDocument,
-} from "@n-ramos/core";
+} from "@n-ramos/celebrimbor-core";
 import { PageBuilder, SchemaForm, usePageBuilder } from "../src";
 
 const heroDef = defineBlock({

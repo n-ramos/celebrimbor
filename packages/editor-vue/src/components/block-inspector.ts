@@ -3,7 +3,7 @@ import {
   validateSchemaValue,
   type BlockRegistry,
   type PageBlock,
-} from "@n-ramos/core";
+} from "@n-ramos/celebrimbor-core";
 import { SchemaForm } from "./schema-form";
 
 type RecordValue = Record<string, unknown>;

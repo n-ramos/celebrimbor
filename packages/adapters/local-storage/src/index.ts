@@ -1,4 +1,4 @@
-import type { PageBuilderStorage, PageDocument } from "@n-ramos/core";
+import type { PageBuilderStorage, PageDocument } from "@n-ramos/celebrimbor-core";
 
 export type LocalStorageAdapterOptions = {
   keyPrefix?: string;

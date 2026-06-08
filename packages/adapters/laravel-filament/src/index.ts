@@ -1,4 +1,4 @@
-import type { AssetPickerAdapter, PageDocument } from "@n-ramos/core";
+import type { AssetPickerAdapter, PageDocument } from "@n-ramos/celebrimbor-core";
 
 export type LaravelMediaPayload = {
   id: string;
