@@ -4,6 +4,11 @@
   "type": "module",
   "description": "Standalone bundle that registers the <my-page-builder> web component with the basic block library, for embedding in non-React hosts (e.g. a Laravel/Filament admin).",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n-ramos/celebrimbor.git",
+    "directory": "apps/embed"
+  },
   "sideEffects": true,
   "main": "./dist/celebrimbor.js",
   "module": "./dist/celebrimbor.js",
