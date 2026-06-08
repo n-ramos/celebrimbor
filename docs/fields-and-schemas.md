@@ -1,6 +1,6 @@
 # Fields et schemas
 
-Ce guide documente le systeme de fields utilise par `@n-ramos/celebrimbor-core` et rendu par `SchemaForm` dans `@n-ramos/celebrimbor-editor-react`.
+Ce guide documente le systeme de fields utilise par `@n-ramos/celebrimbor-core` et rendu par `SchemaForm` dans `@n-ramos/celebrimbor-editor-react` (et son port `@n-ramos/celebrimbor-editor-vue`).
 
 L'objectif est simple:
 
@@ -72,14 +72,24 @@ type PrimitiveFieldType =
   | "richtext"
   | "markdown"
   | "number"
+  | "range"
   | "boolean"
   | "select"
   | "radio"
   | "color"
   | "url"
+  | "date"
+  | "alignment"
+  | "textalign"
   | "asset";
 
-type BlockFieldType = PrimitiveFieldType | "object" | "array";
+type BlockFieldType =
+  | PrimitiveFieldType
+  | "object"
+  | "array"
+  | "custom"
+  | "row"
+  | "tabs";
 ```
 
 En pratique:
@@ -93,7 +103,9 @@ En pratique:
 - `markdown`
   Un contenu texte brut au format Markdown.
 - `number`
-  Une valeur numerique.
+  Une valeur numerique (input nombre).
+- `range`
+  Une valeur numerique via un curseur (`min` / `max` / `step`).
 - `boolean`
   Un toggle vrai/faux.
 - `select`
@@ -104,12 +116,27 @@ En pratique:
   Une couleur CSS.
 - `url`
   Une URL.
+- `date`
+  Une date (input date, stockee en chaine ISO `YYYY-MM-DD`).
+- `alignment`
+  Un alignement de bloc (`left` / `center` / `right`), boutons a icones.
+- `textalign`
+  Un alignement de texte (`left` / `center` / `right` / `justify`).
 - `asset`
   Une ressource media, typiquement une image.
 - `object`
-  Un groupe de sous-fields imbriques.
+  Un groupe de sous-fields imbriques (cree une cle imbriquee dans le JSON).
 - `array`
   Un field repeatable, ideal pour FAQ, colonnes, galleries, features, pricing rows, etc.
+- `custom`
+  Un field rendu par un composant maison (voir [Custom fields](#custom-fields)).
+- `row` / `tabs`
+  Des conteneurs de **presentation** du formulaire (voir [Layout fields](#layout-fields-row--tabs)). Ils n'ajoutent **pas** de cle de donnees : leurs enfants ecrivent a plat.
+
+> Equivalences ciklik: `text`+`multiline` -> `textarea`, `HTMLText` -> `richtext`,
+> `Checkbox` -> `boolean`, `ImageUrl` -> `asset`, `Repeater` -> `array`,
+> `Range` -> `range`, `DatePicker` -> `date`, `TextAlign` -> `textalign`,
+> `Layout/Row` -> `row`, `Layout/Tabs` -> `tabs`, `Custom Field` -> `custom`.
 
 ## Proprietes communes
 
@@ -238,6 +265,24 @@ Bon choix si:
 { name: "columns", type: "number", label: "Columns" }
 ```
 
+### `range`
+
+Un curseur (slider) pour choisir une valeur numerique bornee. Accepte `min`, `max` et `step`.
+
+```ts
+{
+  name: "rating",
+  type: "range",
+  label: "Rating",
+  min: 0,
+  max: 5,
+  step: 1,
+  defaultValue: 5,
+}
+```
+
+`min` / `max` sont aussi repercutes dans le schema Zod genere.
+
 ### `boolean`
 
 ```ts
@@ -298,6 +343,34 @@ Pratique quand il faut comparer visuellement quelques choix.
   label: "Button URL",
 }
 ```
+
+### `date`
+
+Un selecteur de date. La valeur est stockee en chaine ISO `YYYY-MM-DD`.
+
+```ts
+{ name: "publishedAt", type: "date", label: "Published at" }
+```
+
+### `alignment`
+
+Alignement de bloc, rendu en boutons a icones. Valeurs par defaut: `left` / `center` / `right`.
+Tu peux surcharger via `options`.
+
+```ts
+{ name: "align", type: "alignment", label: "Block alignment", defaultValue: "center" }
+```
+
+### `textalign`
+
+Alignement de texte. Valeurs par defaut: `left` / `center` / `right` / `justify`.
+
+```ts
+{ name: "textAlign", type: "textalign", label: "Text alignment", defaultValue: "left" }
+```
+
+> `alignment` et `textalign` sont des enumerations: leur jeu de valeurs est
+> contraint dans le schema Zod genere (comme `select` / `radio`).
 
 ### `asset`
 
@@ -505,6 +578,130 @@ JSON produit:
 - Utilise `itemLabel` pour une UI plus lisible.
 - Donne un `defaultValue` aux sous-fields quand tu veux accelerer l'edition.
 
+## Layout fields (row / tabs)
+
+`row` et `tabs` sont des **conteneurs de presentation du formulaire**. Contrairement
+a `object`, ils n'introduisent **aucune cle** dans le JSON: leurs champs enfants
+ecrivent a plat, au meme niveau que s'ils etaient declares directement. Ils servent
+uniquement a organiser l'UI de l'inspecteur.
+
+> Consequence importante: ajouter ou retirer un `row` / `tabs` autour de champs
+> existants ne change pas la forme des donnees. Le JSON reste identique.
+
+### `row`
+
+Dispose ses champs sur une meme ligne. `columns` suit la syntaxe CSS
+`grid-template-columns` (par defaut, colonnes de largeur egale).
+
+```ts
+{
+  type: "row",
+  label: "Alignement",
+  columns: "1fr 1fr",
+  fields: [
+    { name: "align", type: "alignment", label: "Bloc" },
+    { name: "textAlign", type: "textalign", label: "Texte" },
+  ],
+}
+```
+
+### `tabs`
+
+Groupe les champs en onglets. Chaque onglet a un `label` et ses propres `fields`.
+
+```ts
+{
+  type: "tabs",
+  tabs: [
+    {
+      label: "Contenu",
+      fields: [
+        { name: "title", type: "text", label: "Titre", required: true },
+        { name: "body", type: "textarea", label: "Texte" },
+      ],
+    },
+    {
+      label: "Style",
+      fields: [
+        { name: "size", type: "range", label: "Taille", min: 12, max: 64 },
+        {
+          type: "row",
+          label: "Alignement",
+          fields: [
+            { name: "align", type: "alignment", label: "Bloc", defaultValue: "center" },
+            { name: "textAlign", type: "textalign", label: "Texte", defaultValue: "center" },
+          ],
+        },
+      ],
+    },
+  ],
+}
+```
+
+Les conteneurs sont **imbricables** (un `row` dans un onglet, par exemple) et
+fonctionnent partout ou une liste de `fields` est attendue (racine, `object`,
+onglet). Comme ils sont aplatis, `title`, `body`, `size`, `align` et `textAlign`
+de l'exemple ci-dessus vivent tous au meme niveau:
+
+```json
+{
+  "title": "...",
+  "body": "...",
+  "size": 28,
+  "align": "center",
+  "textAlign": "center"
+}
+```
+
+## Custom fields
+
+Le type `custom` delegue le rendu a un composant que **tu** fournis. Le field
+reference le composant par une cle (`component`), et l'editeur recoit un registre
+`customFields` qui mappe cette cle vers le composant. La valeur stockee reste du
+JSON serialisable.
+
+Declaration cote schema:
+
+```ts
+{
+  name: "accent",
+  type: "custom",
+  label: "Couleur d'accent",
+  component: "color-swatch",
+  options: { presets: ["#0ea5e9", "#6366f1", "#10b981"] },
+}
+```
+
+Composant (React), via le type exporte `CustomFieldComponent`:
+
+```tsx
+import type { CustomFieldComponent } from "@n-ramos/celebrimbor-editor-react";
+
+export const ColorSwatchField: CustomFieldComponent = ({ field, value, onChange }) => {
+  // field.options contient ce que tu as passe dans le schema
+  return <button onClick={() => onChange("#6366f1")}>{String(value ?? "—")}</button>;
+};
+```
+
+Branchement sur l'editeur, via la prop `customFields`:
+
+```tsx
+<PageBuilder
+  document={document}
+  registry={registry}
+  customFields={{ "color-swatch": ColorSwatchField }}
+  onChange={setDocument}
+/>
+```
+
+Notes:
+
+- Si aucun composant n'est enregistre pour la cle, `SchemaForm` affiche un
+  message d'avertissement plutot que de planter.
+- Le port Vue expose le meme contrat (`customFields` + type `CustomFieldRegistry`),
+  ou la valeur du registre est un composant Vue.
+- Cote Zod, un `custom` est valide comme `unknown` (le composant gere sa propre forme).
+
 ## Validation
 
 Le schema sert a decrire le form, mais la validation metier peut aller plus loin via `validate`.
@@ -650,16 +847,19 @@ schema: {
 
 ## Conseils de modelisation
 
-### 1. Modele les structures, pas l'UI du form
+### 1. Modele d'abord les donnees, la mise en forme du form ensuite
 
-Mauvais reflexe:
-
-- "je veux un tab Content et un tab Style"
-
-Bon reflexe:
+Raisonne en termes de donnees avant de penser a l'agencement de l'inspecteur:
 
 - "j'ai du contenu editorial"
 - "j'ai des settings d'apparence"
+
+plutot que de partir de "je veux un tab Content et un tab Style".
+
+Une fois les donnees modelisees, tu peux **ensuite** les organiser visuellement
+avec `row` / `tabs` si le formulaire devient charge. Ces conteneurs ne changent
+pas la forme du JSON (cf. [Layout fields](#layout-fields-row--tabs)), donc tu peux
+les ajouter ou les retirer sans risque pour le contenu existant.
 
 ### 2. Evite les mega objets
 

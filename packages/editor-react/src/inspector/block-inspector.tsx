@@ -1,11 +1,13 @@
 import type { AssetPickerAdapter, BlockRegistry, PageBlock } from "@n-ramos/celebrimbor-core";
 import { validateSchemaValue } from "@n-ramos/celebrimbor-core";
 import { SchemaForm } from "../forms/schema-form";
+import type { CustomFieldRegistry } from "../types";
 
 type BlockInspectorProps = {
   block?: PageBlock | undefined;
   registry: BlockRegistry;
   assetPicker?: AssetPickerAdapter | undefined;
+  customFields?: CustomFieldRegistry | undefined;
   onUpdateContent: (blockId: string, content: Record<string, unknown>) => void;
   onUpdateSettings: (blockId: string, settings: Record<string, unknown>) => void;
   onDelete: (blockId: string) => void;
@@ -17,6 +19,7 @@ export function BlockInspector({
   block,
   registry,
   assetPicker,
+  customFields,
   onUpdateContent,
   onUpdateSettings,
   onDelete,
@@ -72,6 +75,7 @@ export function BlockInspector({
           value={contentValue}
           onChange={(content) => onUpdateContent(block.id, content)}
           assetPicker={assetPicker}
+          customFields={customFields}
           issues={validateSchemaValue(definition.schema, contentValue).issues}
         />
       </div>
@@ -84,6 +88,7 @@ export function BlockInspector({
             value={settingsValue}
             onChange={(settings) => onUpdateSettings(block.id, settings)}
             assetPicker={assetPicker}
+            customFields={customFields}
             issues={validateSchemaValue(definition.settingsSchema, settingsValue).issues}
           />
         </div>

@@ -4,7 +4,7 @@ import {
   type BlockRegistry,
   type PageBlock,
 } from "@n-ramos/celebrimbor-core";
-import { SchemaForm } from "./schema-form";
+import { SchemaForm, type CustomFieldRegistry } from "./schema-form";
 
 type RecordValue = Record<string, unknown>;
 
@@ -18,6 +18,7 @@ export const BlockInspector = defineComponent({
   props: {
     block: { type: Object as PropType<PageBlock | undefined>, default: undefined },
     registry: { type: Object as PropType<BlockRegistry>, required: true },
+    customFields: { type: Object as PropType<CustomFieldRegistry | undefined>, default: undefined },
   },
   emits: ["update-content", "update-settings", "duplicate", "delete", "toggle-visibility"],
   setup(props, { emit }) {
@@ -46,6 +47,7 @@ export const BlockInspector = defineComponent({
             fields: definition.schema.fields,
             value: content,
             issues: validateSchemaValue(definition.schema, content).issues,
+            customFields: props.customFields,
             "onUpdate:value": (next: RecordValue) => emit("update-content", block.id, next),
           }),
         ]),
@@ -59,6 +61,7 @@ export const BlockInspector = defineComponent({
               fields: definition.settingsSchema.fields,
               value: settings,
               issues: validateSchemaValue(definition.settingsSchema, settings).issues,
+              customFields: props.customFields,
               "onUpdate:value": (next: RecordValue) => emit("update-settings", block.id, next),
             }),
           ]),

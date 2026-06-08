@@ -26,12 +26,14 @@ import type {
   PageDocument,
 } from "@n-ramos/celebrimbor-core";
 import { SchemaForm } from "../forms/schema-form";
+import type { CustomFieldRegistry } from "../types";
 
 type BlocksSidebarProps = {
   document: PageDocument;
   registry: BlockRegistry;
   selectedBlockId?: string | undefined;
   assetPicker?: AssetPickerAdapter | undefined;
+  customFields?: CustomFieldRegistry | undefined;
   canSave?: boolean;
   saving?: boolean;
   onSave?: () => Promise<void>;
@@ -49,6 +51,7 @@ export function BlocksSidebar({
   registry,
   selectedBlockId,
   assetPicker,
+  customFields,
   canSave,
   saving,
   onSave,
@@ -142,6 +145,7 @@ export function BlocksSidebar({
                     registry={registry}
                     selected={selectedBlockId === block.id}
                     assetPicker={assetPicker}
+                    customFields={customFields}
                     onSelect={onSelect}
                     onUpdateContent={onUpdateContent}
                     onUpdateSettings={onUpdateSettings}
@@ -190,6 +194,7 @@ type SidebarBlockCardProps = {
   registry: BlockRegistry;
   selected: boolean;
   assetPicker?: AssetPickerAdapter | undefined;
+  customFields?: CustomFieldRegistry | undefined;
   onSelect: (blockId?: string) => void;
   onUpdateContent: (blockId: string, content: Record<string, unknown>) => void;
   onUpdateSettings: (blockId: string, settings: Record<string, unknown>) => void;
@@ -204,6 +209,7 @@ function SidebarBlockCard({
   registry,
   selected,
   assetPicker,
+  customFields,
   onSelect,
   onUpdateContent,
   onUpdateSettings,
@@ -289,6 +295,7 @@ function SidebarBlockCard({
                   value={(block.content as Record<string, unknown>) ?? {}}
                   onChange={(content) => onUpdateContent(block.id, content)}
                   assetPicker={assetPicker}
+                  customFields={customFields}
                 />
               </section>
 
@@ -302,6 +309,7 @@ function SidebarBlockCard({
                     value={(block.settings as Record<string, unknown>) ?? {}}
                     onChange={(settings) => onUpdateSettings(block.id, settings)}
                     assetPicker={assetPicker}
+                    customFields={customFields}
                   />
                 </section>
               ) : null}

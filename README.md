@@ -9,6 +9,16 @@ Monorepo `pnpm` pour une librairie npm de visual page builder agnostique, inspir
 
 Le cœur ne contient aucun PHP. Laravel et Filament ne sont présents que comme exemple d'intégration consommatrice.
 
+## Aperçu
+
+Un éditeur headless prêt à l'emploi : librairie de blocs, drag & drop, et **preview live** du rendu réel.
+
+![Éditeur : librairie de blocs et preview live](./docs/assets/editor-overview.png)
+
+L'inspecteur est **piloté par le schéma** : tu décris les `fields` une fois et le formulaire se construit tout seul — y compris la mise en forme (`tabs`, `row`), les champs `range` / `alignment` / `date`, et tes propres champs `custom` (ici le sélecteur de couleur d'accent).
+
+![Inspecteur piloté par schéma : onglets, slider, alignements et champ custom](./docs/assets/editor-fields.png)
+
 ## Vision
 
 Le projet sépare strictement les couches suivantes :
@@ -108,6 +118,7 @@ Fonctionnalités :
 - drag & drop de réordonnancement
 - recherche dans la librairie
 - fallback bloc inconnu
+- mise en forme du formulaire via conteneurs `row` / `tabs` et fields `custom` (prop `customFields`)
 - stylesheet Tailwind exportée via `@n-ramos/celebrimbor-editor-react/styles.css`
 
 ### `@n-ramos/celebrimbor-editor-element`
@@ -118,6 +129,7 @@ Fonctionnalités :
 - montage du builder React dans une page HTML sans framework hôte
 - synchronisation d'un champ cache JSON via l'attribut `name`
 - emission par defaut d'un tableau JSON portable a plat
+- enregistrement de champs `custom` via l'option `customFields` de `definePageBuilderElement`
 - dispatch des événements `my-page-builder:change` et `my-page-builder:save`
 - stylesheet réexportée via `@n-ramos/celebrimbor-editor-element/styles.css`
 
@@ -269,7 +281,7 @@ L'intégration continue ([`.github/workflows/ci.yml`](./.github/workflows/ci.yml
 - **Format portable et collisions de clés** : un champ de contenu nommé `_name`, `_id`, `_settings`, `_visible` ou `_children` entre en collision avec les clés réservées et est perdu/écrasé au `serializePortableDocument`. Voir `docs/portable-json-and-web-component.md`.
 - **`moveBlock`** réinsère le bloc à l'index cible *dans le document après retrait* (sémantique post-suppression). L'identité (`id`) du bloc et de ses enfants est préservée depuis le correctif.
 - **Blocs inconnus** : avec un `unknownBlockFactory`, `validateDocument` rétrograde les types inconnus en `warning` (le document reste valide, le JSON est préservé) ; sans fallback, ils restent une `error`.
-- **`editor-vue`** est volontairement minimal (champs primitifs, objets, arrays, réordonnancement haut/bas) : pas de drag & drop ni d'éditeur WYSIWYG comme la version React.
+- **`editor-vue`** est volontairement minimal côté UX (réordonnancement haut/bas, pas de drag & drop ni d'éditeur WYSIWYG comme la version React) ; il couvre en revanche le même jeu de fields que la version React (primitifs, `object`, `array`, `row`/`tabs`, `custom`).
 
 Analyse détaillée et axes d'amélioration : [`docs/analysis-and-recommendations.md`](./docs/analysis-and-recommendations.md).
 

@@ -5,7 +5,7 @@ Port Vue 3 de l'editeur, ecrit en render functions (`h()`, sans SFC) et reutilis
 ## Exports
 
 - `PageBuilder` : editeur complet (librairie de blocs, canvas avec selection / reordonnancement haut-bas / suppression, inspecteur, preview, bouton enregistrer). `v-model:document` + evenement `save`.
-- `SchemaForm` : formulaire pilote par schema (champs primitifs, objets, arrays) avec affichage des anomalies (`issues`).
+- `SchemaForm` : formulaire pilote par schema (champs primitifs, `object`, `array`, conteneurs `row`/`tabs`, fields `custom` via la prop `customFields`) avec affichage des anomalies (`issues`).
 - `PageRenderer` : rendu du document en HTML via `renderDocumentToHtml`.
 - `BlockInspector` : edition contenu/reglages du bloc selectionne avec validation live.
 - `usePageBuilder(documentRef, onChange)` : composable equivalent au hook React.

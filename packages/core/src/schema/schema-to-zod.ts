@@ -1,5 +1,11 @@
 import { z } from "zod";
-import type { BlockField, BlockSchema } from "./types";
+import {
+  defaultFieldOptions,
+  flattenDataFields,
+  type BlockField,
+  type BlockSchema,
+  type DataField,
+} from "./types";
 
 /**
  * Genere un schema Zod a partir de la description declarative des `fields`.
@@ -14,18 +20,22 @@ import type { BlockField, BlockSchema } from "./types";
  * ```
  *
  * Regles de mapping:
- * - `text`/`textarea`/`richtext`/`markdown`/`url`/`color` -> `string`
+ * - `text`/`textarea`/`richtext`/`markdown`/`url`/`color`/`date` -> `string`
  *   (`.min(1)` si le champ est `required`)
- * - `number` -> `number`, `boolean` -> `boolean`
- * - `select`/`radio` avec options -> `enum` des valeurs autorisees
+ * - `number`/`range` -> `number` (avec `.min`/`.max` issus de `min`/`max`)
+ * - `select`/`radio`/`alignment`/`textalign` avec options -> `enum` des valeurs autorisees
  * - `asset` -> objet asset nullable
  * - `object` -> objet imbrique recursif
  * - `array` -> tableau (avec `.min`/`.max` issus de `minItems`/`maxItems`)
+ * - `custom` -> `unknown` (le composant gere sa propre valeur)
+ * - `row`/`tabs` -> aplatis: leurs enfants sont remontes au niveau parent
  * - un champ non `required` est rendu optionnel
  */
 export function schemaToZod(fields: BlockField[]): z.ZodObject<z.ZodRawShape> {
   const shape: z.ZodRawShape = {};
-  for (const field of fields) {
+  // Les conteneurs `row`/`tabs` sont aplatis: ils n'ajoutent pas de cle, seuls
+  // leurs champs enfants porteurs de donnees comptent.
+  for (const field of flattenDataFields(fields)) {
     shape[field.name] = fieldToZod(field);
   }
   return z.object(shape);
@@ -47,13 +57,16 @@ export function withGeneratedZodSchema<TValue>(schema: BlockSchema<TValue>): Blo
   return { ...schema, zodSchema: schemaToZod(schema.fields) };
 }
 
-function fieldToZod(field: BlockField): z.ZodTypeAny {
+function fieldToZod(field: DataField): z.ZodTypeAny {
   const base = baseFieldToZod(field);
   return field.required ? base : base.optional();
 }
 
-function baseFieldToZod(field: BlockField): z.ZodTypeAny {
+function baseFieldToZod(field: DataField): z.ZodTypeAny {
   switch (field.type) {
+    case "custom":
+      // Le composant custom controle sa propre valeur: on ne contraint pas la forme.
+      return z.unknown();
     case "object":
       return schemaToZod(field.fields);
     case "array": {
@@ -67,7 +80,16 @@ function baseFieldToZod(field: BlockField): z.ZodTypeAny {
       return array;
     }
     case "number":
-      return z.number();
+    case "range": {
+      let number = z.number();
+      if (field.min !== undefined) {
+        number = number.min(field.min);
+      }
+      if (field.max !== undefined) {
+        number = number.max(field.max);
+      }
+      return number;
+    }
     case "boolean":
       return z.boolean();
     case "asset":
@@ -82,8 +104,11 @@ function baseFieldToZod(field: BlockField): z.ZodTypeAny {
         })
         .nullable();
     case "select":
-    case "radio": {
-      const values = field.options?.map((option) => String(option.value)) ?? [];
+    case "radio":
+    case "alignment":
+    case "textalign": {
+      const options = field.options ?? defaultFieldOptions(field.type);
+      const values = options?.map((option) => String(option.value)) ?? [];
       if (values.length > 0) {
         return z.enum(values as [string, ...string[]]);
       }

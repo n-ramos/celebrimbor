@@ -46,5 +46,6 @@ VisualPageBuilderField::make('document')
 - écouter `onChange`
 - pousser les mises à jour vers Livewire
 - brancher un asset picker Laravel pour les médias
+- (optionnel) enregistrer des champs `custom` via `customFields` au `definePageBuilderElement` — voir [Champs custom dans l'editeur Filament](../../docs/laravel-integration.md#champs-custom-dans-lediteur-filament)
 
 Voir aussi `packages/adapters/laravel-filament/src/index.ts` pour le bridge JavaScript.
