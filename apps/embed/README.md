@@ -26,7 +26,8 @@ LARAVEL_PUBLIC=/absolute/path/to/your-laravel-app/public \
 ```
 
 Then load both files in the Filament panel (render hook) — see
-`n-ramos/celebrimbor-filament-plugin` → `examples/laravel/`.
+[`examples/laravel-filament/`](../../examples/laravel-filament/README.md) and the
+[Laravel integration guide](../../docs/laravel-integration.md).
 
 ## Custom blocks
 

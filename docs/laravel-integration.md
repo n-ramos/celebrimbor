@@ -263,6 +263,52 @@ mountFilamentBridge({
 });
 ```
 
+## Champs custom dans l'editeur Filament
+
+Les champs `custom` (voir [Fields et schemas](./fields-and-schemas.md#custom-fields))
+sont rendus par des composants que tu fournis. Comme un composant ne peut pas
+transiter par un attribut HTML, on l'enregistre **au moment ou le bundle definit
+le web component**, via l'option `customFields` de `definePageBuilderElement` :
+
+```ts
+import { createBlockRegistry } from "@n-ramos/celebrimbor-core";
+import { registerBasicBlocks } from "@n-ramos/celebrimbor-blocks-basic";
+import { definePageBuilderElement } from "@n-ramos/celebrimbor-editor-element";
+import type { CustomFieldRegistry } from "@n-ramos/celebrimbor-editor-react";
+import { ColorSwatchField } from "./custom-fields/color-swatch";
+
+const registry = registerBasicBlocks(createBlockRegistry());
+
+const customFields: CustomFieldRegistry = {
+  // la cle correspond au `component` declare dans le schema du field
+  "color-swatch": ColorSwatchField,
+};
+
+definePageBuilderElement({ registry, customFields });
+```
+
+La cle du registre (`"color-swatch"`) doit correspondre au `component` declare
+dans le schema du bloc :
+
+```ts
+{ name: "accent", type: "custom", label: "Accent", component: "color-swatch" }
+```
+
+Tu peux aussi assigner le registre apres coup sur une instance precise :
+
+```ts
+const el = document.querySelector("my-page-builder");
+el.customFields = { "color-swatch": ColorSwatchField };
+```
+
+Si aucun composant n'est enregistre pour un `component`, l'editeur affiche un
+avertissement a la place du champ (il ne plante pas). Les conteneurs `row` /
+`tabs` et tous les champs primitifs ne demandent **aucune** configuration cote
+hote : ils fonctionnent des que le bundle est charge.
+
+> Le bundle d'exemple [`@n-ramos/celebrimbor-embed`](/Users/nra/Documents/Celebrimbor/apps/embed/src/main.ts)
+> montre ce branchement (champ `accent` du bloc testimonial).
+
 ## Gestion des assets Laravel
 
 Le field `asset` du builder attend un objet de cette forme:

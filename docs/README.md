@@ -5,7 +5,7 @@ Cette documentation couvre la partie developpeur du page builder:
 - model de document
 - definition de blocs
 - systeme de fields et de schemas
-- fields repeatables (`array`)
+- fields repeatables (`array`), conteneurs de mise en forme (`row` / `tabs`) et fields `custom`
 - sortie JSON portable
 - integration via web component
 

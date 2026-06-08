@@ -17,18 +17,25 @@ import {
 } from "@n-ramos/celebrimbor-core";
 import { createBlockRegistry } from "@n-ramos/celebrimbor-core";
 import { registerBasicBlocks } from "@n-ramos/celebrimbor-blocks-basic";
-import { PageRenderer } from "@n-ramos/celebrimbor-editor-react";
+import { PageRenderer, type CustomFieldRegistry } from "@n-ramos/celebrimbor-editor-react";
 import { definePageBuilderElement } from "@n-ramos/celebrimbor-editor-element";
 
 import { testimonialBlock } from "./blocks/testimonial";
+import { ColorSwatchField } from "./custom-fields/color-swatch";
 
 import "@n-ramos/celebrimbor-editor-element/styles.css";
 
 const registry = registerBasicBlocks(createBlockRegistry());
 registry.register(testimonialBlock); // example custom block
 
+// Registre des champs `custom`: la cle correspond au `component` declare dans le
+// schema (ici le champ "accent" du bloc testimonial -> "color-swatch").
+const customFields: CustomFieldRegistry = {
+  "color-swatch": ColorSwatchField,
+};
+
 // --- Editor element -------------------------------------------------------
-definePageBuilderElement({ registry });
+definePageBuilderElement({ registry, customFields });
 
 // --- Server-side preview renderer ----------------------------------------
 

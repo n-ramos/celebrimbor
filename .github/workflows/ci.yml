@@ -30,8 +30,11 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
-      - name: Test + coverage
-        run: pnpm test:coverage
-
+      # Build first: the root coverage run resolves workspace packages
+      # (e.g. @n-ramos/celebrimbor-core) via their published `dist` entry points,
+      # so they must exist before `vitest run --coverage`.
       - name: Build
         run: pnpm build
+
+      - name: Test + coverage
+        run: pnpm test:coverage

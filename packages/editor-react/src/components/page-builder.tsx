@@ -41,6 +41,7 @@ export function PageBuilder(props: PageBuilderProps) {
             registry={props.registry}
             selectedBlockId={builder.selectedId}
             assetPicker={props.assetPicker}
+            customFields={props.customFields}
             canSave={Boolean(props.onSave)}
             saving={builder.saving}
             onSave={builder.save}

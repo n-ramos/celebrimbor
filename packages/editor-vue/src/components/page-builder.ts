@@ -2,6 +2,7 @@ import { computed, defineComponent, h, type PropType } from "vue";
 import type { BlockRegistry, PageDocument } from "@n-ramos/celebrimbor-core";
 import { usePageBuilder } from "../composables/use-page-builder";
 import { BlockInspector } from "./block-inspector";
+import type { CustomFieldRegistry } from "./schema-form";
 import { PageRenderer } from "./page-renderer";
 
 type RecordValue = Record<string, unknown>;
@@ -16,6 +17,7 @@ export const PageBuilder = defineComponent({
   props: {
     document: { type: Object as PropType<PageDocument>, required: true },
     registry: { type: Object as PropType<BlockRegistry>, required: true },
+    customFields: { type: Object as PropType<CustomFieldRegistry | undefined>, default: undefined },
   },
   emits: ["update:document", "save"],
   setup(props, { emit }) {
@@ -103,6 +105,7 @@ export const PageBuilder = defineComponent({
         h(BlockInspector, {
           block: builder.selectedBlock.value,
           registry: props.registry,
+          customFields: props.customFields,
           "onUpdate-content": (id: string, content: RecordValue) => builder.updateContent(id, content),
           "onUpdate-settings": (id: string, settings: RecordValue) => builder.updateSettings(id, settings),
           onDuplicate: (id: string) => builder.duplicate(id),

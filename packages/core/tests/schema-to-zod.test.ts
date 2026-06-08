@@ -72,6 +72,73 @@ describe("schemaToZod", () => {
   });
 });
 
+describe("ciklik-style fields", () => {
+  const zodSchema = schemaToZod([
+    { name: "rating", type: "range", label: "Rating", min: 0, max: 5, required: true },
+    { name: "published", type: "date", label: "Published" },
+    { name: "block", type: "alignment", label: "Block align" },
+    { name: "text", type: "textalign", label: "Text align" },
+  ]);
+
+  it("treats range as a bounded number", () => {
+    expect(zodSchema.safeParse({ rating: 3 }).success).toBe(true);
+    expect(zodSchema.safeParse({ rating: 9 }).success).toBe(false);
+    expect(zodSchema.safeParse({ rating: "3" }).success).toBe(false);
+  });
+
+  it("treats date as a string", () => {
+    expect(zodSchema.safeParse({ rating: 1, published: "2026-06-08" }).success).toBe(true);
+  });
+
+  it("restricts alignment to its default options", () => {
+    expect(zodSchema.safeParse({ rating: 1, block: "center" }).success).toBe(true);
+    expect(zodSchema.safeParse({ rating: 1, block: "diagonal" }).success).toBe(false);
+  });
+
+  it("allows justify only for textalign", () => {
+    expect(zodSchema.safeParse({ rating: 1, text: "justify" }).success).toBe(true);
+    expect(zodSchema.safeParse({ rating: 1, block: "justify" }).success).toBe(false);
+  });
+});
+
+describe("layout + custom fields", () => {
+  const zodSchema = schemaToZod([
+    {
+      type: "tabs",
+      tabs: [
+        { label: "Content", fields: [{ name: "title", type: "text", label: "Title", required: true }] },
+        {
+          label: "Style",
+          fields: [
+            {
+              type: "row",
+              label: "Alignment",
+              fields: [
+                { name: "align", type: "alignment", label: "Block" },
+                { name: "width", type: "range", label: "Width", min: 0, max: 100 },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    { name: "widget", type: "custom", label: "Widget", component: "my-widget" },
+  ]);
+
+  it("flattens row/tabs children into the parent shape", () => {
+    expect(zodSchema.safeParse({ title: "Hi", align: "center", width: 40 }).success).toBe(true);
+    // `title` (nested in a tab) stays required at top level.
+    expect(zodSchema.safeParse({ align: "center" }).success).toBe(false);
+    // `align` keeps its enum constraint despite being inside a row.
+    expect(zodSchema.safeParse({ title: "Hi", align: "diagonal" }).success).toBe(false);
+  });
+
+  it("accepts arbitrary values for custom fields", () => {
+    expect(zodSchema.safeParse({ title: "Hi", widget: { anything: true } }).success).toBe(true);
+    expect(zodSchema.safeParse({ title: "Hi" }).success).toBe(true);
+  });
+});
+
 describe("withGeneratedZodSchema", () => {
   it("fills a missing zodSchema from the fields", () => {
     const schema = withGeneratedZodSchema({ fields });

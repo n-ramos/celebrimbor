@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "playground-react",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@n-ramos/celebrimbor-playground-react", "dev"],
+      "port": 5180
+    }
+  ]
+}

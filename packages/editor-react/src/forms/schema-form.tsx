@@ -1,7 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
+  AlignCenter,
+  AlignJustify,
+  AlignLeft,
+  AlignRight,
   Bold,
+  Boxes,
+  CalendarDays,
   Check,
   Code2,
   Heading1,
@@ -12,17 +18,24 @@ import {
   Palette,
   Plus,
   Rows3,
+  SlidersHorizontal,
   TextCursorInput,
   Trash2,
   Type,
 } from "lucide-react";
-import type {
-  ArrayField,
-  Asset,
-  BlockField,
-  ObjectField,
-  PrimitiveField,
-  ValidationIssue,
+import {
+  defaultFieldOptions,
+  flattenDataFields,
+  type ArrayField,
+  type Asset,
+  type BlockField,
+  type CustomField,
+  type DataField,
+  type ObjectField,
+  type PrimitiveField,
+  type RowField,
+  type TabsField,
+  type ValidationIssue,
 } from "@n-ramos/celebrimbor-core";
 import type { SchemaFormProps } from "../types";
 
@@ -31,17 +44,19 @@ export function SchemaForm<TValue extends Record<string, unknown>>({
   value,
   onChange,
   assetPicker,
+  customFields,
   issues,
 }: SchemaFormProps<TValue>) {
   return (
     <div className="space-y-4">
-      {schema.fields.map((field) => (
+      {schema.fields.map((field, index) => (
         <FieldRenderer
-          key={field.name}
+          key={fieldKey(field, index)}
           field={field}
           value={value}
           onChange={onChange}
           assetPicker={assetPicker}
+          customFields={customFields}
           issues={issues}
         />
       ))}
@@ -54,6 +69,7 @@ type RendererProps<TValue extends Record<string, unknown>> = {
   value: TValue;
   onChange: (value: TValue) => void;
   assetPicker?: SchemaFormProps["assetPicker"];
+  customFields?: SchemaFormProps["customFields"];
   issues?: ValidationIssue[] | undefined;
 };
 
@@ -62,10 +78,51 @@ function FieldRenderer<TValue extends Record<string, unknown>>({
   value,
   onChange,
   assetPicker,
+  customFields,
   issues,
 }: RendererProps<TValue>) {
+  // Conteneurs de presentation: leurs enfants ecrivent a plat dans `value`.
+  if (field.type === "row") {
+    return (
+      <RowLayout
+        field={field}
+        value={value}
+        onChange={onChange}
+        assetPicker={assetPicker}
+        customFields={customFields}
+        issues={issues}
+      />
+    );
+  }
+
+  if (field.type === "tabs") {
+    return (
+      <TabsLayout
+        field={field}
+        value={value}
+        onChange={onChange}
+        assetPicker={assetPicker}
+        customFields={customFields}
+        issues={issues}
+      />
+    );
+  }
+
   const fieldValue = value[field.name];
   const directError = findDirectError(issues, field.name);
+
+  if (field.type === "custom") {
+    return (
+      <FieldSection field={field} icon={<Boxes className="h-4 w-4" />} error={directError}>
+        <CustomFieldEditor
+          field={field}
+          value={fieldValue}
+          onChange={(nextValue) => onChange(setValue(value, field.name, nextValue))}
+          customFields={customFields}
+        />
+      </FieldSection>
+    );
+  }
 
   if (field.type === "object") {
     return (
@@ -76,6 +133,7 @@ function FieldRenderer<TValue extends Record<string, unknown>>({
             value={asRecord(fieldValue)}
             onChange={(nextValue) => onChange(setValue(value, field.name, nextValue))}
             assetPicker={assetPicker}
+            customFields={customFields}
             issues={scopeIssues(issues, field.name)}
           />
         </div>
@@ -90,6 +148,7 @@ function FieldRenderer<TValue extends Record<string, unknown>>({
         value={Array.isArray(fieldValue) ? fieldValue : []}
         onChange={(nextValue) => onChange(setValue(value, field.name, nextValue))}
         assetPicker={assetPicker}
+        customFields={customFields}
         issues={scopeIssues(issues, field.name)}
         error={directError}
       />
@@ -108,8 +167,120 @@ function FieldRenderer<TValue extends Record<string, unknown>>({
   );
 }
 
+type LayoutProps<TValue extends Record<string, unknown>> = {
+  value: TValue;
+  onChange: (value: TValue) => void;
+  assetPicker?: SchemaFormProps["assetPicker"];
+  customFields?: SchemaFormProps["customFields"];
+  issues?: ValidationIssue[] | undefined;
+};
+
+function RowLayout<TValue extends Record<string, unknown>>({
+  field,
+  value,
+  onChange,
+  assetPicker,
+  customFields,
+  issues,
+}: LayoutProps<TValue> & { field: RowField }) {
+  const columns = field.columns ?? `repeat(${Math.max(field.fields.length, 1)}, minmax(0, 1fr))`;
+  return (
+    <div className="space-y-2">
+      {field.label ? (
+        <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">{field.label}</div>
+      ) : null}
+      <div className="grid items-start gap-3" style={{ gridTemplateColumns: columns }}>
+        {field.fields.map((child, index) => (
+          <div key={fieldKey(child, index)} className="min-w-0">
+            <FieldRenderer
+              field={child}
+              value={value}
+              onChange={onChange}
+              assetPicker={assetPicker}
+              customFields={customFields}
+              issues={issues}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TabsLayout<TValue extends Record<string, unknown>>({
+  field,
+  value,
+  onChange,
+  assetPicker,
+  customFields,
+  issues,
+}: LayoutProps<TValue> & { field: TabsField }) {
+  const [active, setActive] = useState(0);
+  const activeIndex = active < field.tabs.length ? active : 0;
+  const tab = field.tabs[activeIndex];
+
+  return (
+    <div className="space-y-3">
+      {field.label ? (
+        <div className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">{field.label}</div>
+      ) : null}
+      <div role="tablist" className="flex flex-wrap gap-2 rounded-[1rem] border border-slate-200 bg-slate-50 p-1">
+        {field.tabs.map((entry, index) => {
+          const selected = index === activeIndex;
+          return (
+            <button
+              key={`${entry.label}-${index}`}
+              type="button"
+              role="tab"
+              aria-selected={selected}
+              className={`rounded-[0.75rem] px-4 py-2 text-sm font-medium transition ${
+                selected ? "bg-white text-slate-950 shadow-sm" : "text-slate-500 hover:text-slate-800"
+              }`}
+              onClick={() => setActive(index)}
+            >
+              {entry.label}
+            </button>
+          );
+        })}
+      </div>
+      <div className="space-y-4">
+        {tab?.fields.map((child, index) => (
+          <FieldRenderer
+            key={fieldKey(child, index)}
+            field={child}
+            value={value}
+            onChange={onChange}
+            assetPicker={assetPicker}
+            customFields={customFields}
+            issues={issues}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+type CustomFieldEditorProps = {
+  field: CustomField;
+  value: unknown;
+  onChange: (value: unknown) => void;
+  customFields?: SchemaFormProps["customFields"];
+};
+
+function CustomFieldEditor({ field, value, onChange, customFields }: CustomFieldEditorProps) {
+  const Component = customFields?.[field.component];
+  if (!Component) {
+    return (
+      <div className="rounded-[1rem] border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        Champ custom <code>{field.component}</code> non enregistre. Fournis-le via <code>customFields</code>.
+      </div>
+    );
+  }
+  return <Component field={field} value={value} onChange={onChange} />;
+}
+
 type FieldSectionProps = {
-  field: Pick<BlockField, "label" | "description" | "required">;
+  field: { label: string; description?: string | undefined; required?: boolean | undefined };
   icon?: ReactNode;
   error?: string | undefined;
   children: ReactNode;
@@ -263,6 +434,68 @@ function PrimitiveFieldEditor({ field, value, onChange, assetPicker }: Primitive
     );
   }
 
+  if (field.type === "range") {
+    const min = field.min ?? 0;
+    const max = field.max ?? 100;
+    const step = field.step ?? 1;
+    const current = typeof value === "number" ? value : Number(value ?? min);
+    return (
+      <div className="flex items-center gap-3 rounded-[1rem] border border-slate-200 bg-white px-4 py-3">
+        <input
+          type="range"
+          className="h-2 flex-1 cursor-pointer accent-cyan-500"
+          min={min}
+          max={max}
+          step={step}
+          value={Number.isNaN(current) ? min : current}
+          onChange={(event) => onChange(Number(event.target.value))}
+        />
+        <span className="w-12 shrink-0 text-right text-sm font-semibold tabular-nums text-slate-700">
+          {Number.isNaN(current) ? min : current}
+        </span>
+      </div>
+    );
+  }
+
+  if (field.type === "date") {
+    return (
+      <input
+        type="date"
+        className="w-full rounded-[1rem] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-cyan-400"
+        value={String(value ?? "")}
+        onChange={(event) => onChange(event.target.value)}
+      />
+    );
+  }
+
+  if (field.type === "alignment" || field.type === "textalign") {
+    const options = field.options ?? defaultFieldOptions(field.type) ?? [];
+    return (
+      <div className="flex flex-wrap gap-2">
+        {options.map((option) => {
+          const active = String(value ?? "") === String(option.value);
+          return (
+            <button
+              key={String(option.value)}
+              type="button"
+              title={option.label}
+              aria-label={option.label}
+              aria-pressed={active}
+              className={`inline-flex items-center gap-2 rounded-2xl border px-4 py-2 text-sm font-medium transition ${
+                active
+                  ? "border-blue-600 bg-blue-600 text-white shadow-[0_14px_35px_-20px_rgba(37,99,235,0.75)]"
+                  : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+              }`}
+              onClick={() => onChange(option.value)}
+            >
+              {alignmentIcon(String(option.value))}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
     <input
       type={inputTypeForField(field.type)}
@@ -278,11 +511,12 @@ type ArrayFieldEditorProps = {
   value: unknown[];
   onChange: (value: unknown[]) => void;
   assetPicker?: SchemaFormProps["assetPicker"];
+  customFields?: SchemaFormProps["customFields"];
   issues?: ValidationIssue[] | undefined;
   error?: string | undefined;
 };
 
-function ArrayFieldEditor({ field, value, onChange, assetPicker, issues, error }: ArrayFieldEditorProps) {
+function ArrayFieldEditor({ field, value, onChange, assetPicker, customFields, issues, error }: ArrayFieldEditorProps) {
   const canAdd = field.maxItems === undefined || value.length < field.maxItems;
   const minItems = field.minItems ?? 0;
 
@@ -320,6 +554,7 @@ function ArrayFieldEditor({ field, value, onChange, assetPicker, issues, error }
                   value={asRecord(entry)}
                   onChange={(nextValue) => onChange(replaceAt(value, index, nextValue))}
                   assetPicker={assetPicker}
+                  customFields={customFields}
                   issues={scopeIssues(issues, String(index))}
                 />
               ) : (
@@ -642,16 +877,21 @@ function insertSnippet(
   onChange(nextValue);
 }
 
-function createDefaultValueForField(field: PrimitiveField | ObjectField): unknown {
+function createDefaultValueForField(field: DataField): unknown {
   if (field.defaultValue !== undefined) {
     return structuredClone(field.defaultValue);
   }
 
   if (field.type === "object") {
-    return field.fields.reduce<Record<string, unknown>>((accumulator, childField) => {
+    // Les enfants `row`/`tabs` sont aplatis: leurs cles vivent au meme niveau.
+    return flattenDataFields(field.fields).reduce<Record<string, unknown>>((accumulator, childField) => {
       accumulator[childField.name] = createDefaultValueForAnyField(childField);
       return accumulator;
     }, {});
+  }
+
+  if (field.type === "custom") {
+    return undefined;
   }
 
   if (field.type === "boolean") {
@@ -662,6 +902,15 @@ function createDefaultValueForField(field: PrimitiveField | ObjectField): unknow
     return 0;
   }
 
+  if (field.type === "range") {
+    return field.min ?? 0;
+  }
+
+  if (field.type === "alignment" || field.type === "textalign") {
+    const options = field.options ?? defaultFieldOptions(field.type) ?? [];
+    return options[0]?.value ?? "";
+  }
+
   if (field.type === "asset") {
     return null;
   }
@@ -669,12 +918,19 @@ function createDefaultValueForField(field: PrimitiveField | ObjectField): unknow
   return "";
 }
 
-function createDefaultValueForAnyField(field: BlockField): unknown {
+function createDefaultValueForAnyField(field: DataField): unknown {
   if (field.type === "array") {
     return field.defaultValue !== undefined ? structuredClone(field.defaultValue) : [];
   }
 
   return createDefaultValueForField(field);
+}
+
+function fieldKey(field: BlockField, index: number): string {
+  if (field.type === "row" || field.type === "tabs") {
+    return `${field.type}-${index}`;
+  }
+  return field.name;
 }
 
 function setValue<TValue extends Record<string, unknown>>(value: TValue, path: string, nextValue: unknown): TValue {
@@ -772,7 +1028,27 @@ function iconForField(type: PrimitiveField["type"]) {
       return <ImageIcon className="h-4 w-4" />;
     case "color":
       return <Palette className="h-4 w-4" />;
+    case "range":
+      return <SlidersHorizontal className="h-4 w-4" />;
+    case "date":
+      return <CalendarDays className="h-4 w-4" />;
+    case "alignment":
+    case "textalign":
+      return <AlignLeft className="h-4 w-4" />;
     default:
       return null;
+  }
+}
+
+function alignmentIcon(value: string): ReactNode {
+  switch (value) {
+    case "center":
+      return <AlignCenter className="h-4 w-4" />;
+    case "right":
+      return <AlignRight className="h-4 w-4" />;
+    case "justify":
+      return <AlignJustify className="h-4 w-4" />;
+    default:
+      return <AlignLeft className="h-4 w-4" />;
   }
 }

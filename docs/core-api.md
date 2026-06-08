@@ -102,7 +102,7 @@ schema.zodSchema = schemaToZod(fields);
 const enriched = withGeneratedZodSchema(schema);
 ```
 
-Mapping : champs texte -> `string` (`.min(1)` si `required`), `number`/`boolean`, `select`/`radio` -> `enum`, `asset` -> objet nullable, `object` recursif, `array` avec `.min`/`.max`. Les champs non `required` deviennent optionnels.
+Mapping : champs texte (`text`/`textarea`/`richtext`/`markdown`/`url`/`color`/`date`) -> `string` (`.min(1)` si `required`), `number`/`range` -> `number` (avec `.min`/`.max`), `boolean`, `select`/`radio`/`alignment`/`textalign` -> `enum`, `asset` -> objet nullable, `custom` -> `unknown`, `object` recursif, `array` avec `.min`/`.max`. Les conteneurs `row`/`tabs` sont aplatis (leurs enfants remontent au niveau parent). Les champs non `required` deviennent optionnels.
 
 ## Historique
 

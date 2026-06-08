@@ -9,12 +9,14 @@ import {
   serializePortableDocument,
   type PortableBlock,
 } from "@n-ramos/celebrimbor-core";
-import { PageBuilder } from "@n-ramos/celebrimbor-editor-react";
+import { PageBuilder, type CustomFieldRegistry } from "@n-ramos/celebrimbor-editor-react";
 
 export type PageBuilderElementOptions = {
   registry: BlockRegistry;
   storage?: PageBuilderStorage | undefined;
   assetPicker?: AssetPickerAdapter | undefined;
+  /** Composants pour les champs `custom`, indexes par leur cle `component`. */
+  customFields?: CustomFieldRegistry | undefined;
   onSave?: ((document: PageDocument) => Promise<void>) | undefined;
   createInitialDocument?: (() => PageDocument) | undefined;
   /** URL embedded in the preview pane for a server-rendered preview. */
@@ -92,6 +94,19 @@ export class PageBuilderElement extends HTMLElement {
       delete this.#runtimeOptions.assetPicker;
     } else {
       this.#runtimeOptions.assetPicker = value;
+    }
+    this.#render();
+  }
+
+  get customFields() {
+    return this.#runtimeOptions.customFields ?? this.#defaults().customFields;
+  }
+
+  set customFields(value: CustomFieldRegistry | undefined) {
+    if (value === undefined) {
+      delete this.#runtimeOptions.customFields;
+    } else {
+      this.#runtimeOptions.customFields = value;
     }
     this.#render();
   }
@@ -293,6 +308,7 @@ export class PageBuilderElement extends HTMLElement {
     this.#reactRoot.render(
       <PageBuilder
         assetPicker={this.assetPicker}
+        customFields={this.customFields}
         document={this.#getDocument()}
         onChange={this.#handleChange}
         onSave={this.#handleSave}
@@ -331,6 +347,7 @@ export function definePageBuilderElement(options: PageBuilderElementOptions) {
   class ConfiguredPageBuilderElement extends PageBuilderElement {
     static override defaultOptions = {
       assetPicker: options.assetPicker,
+      customFields: options.customFields,
       createInitialDocument: options.createInitialDocument,
       onSave: options.onSave,
       previewUrl: options.previewUrl,

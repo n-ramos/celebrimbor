@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { BlockField, BlockSchema } from "../schema/types";
+import { defaultFieldOptions, flattenDataFields, type BlockField, type BlockSchema } from "../schema/types";
 import type { ValidationIssue, ValidationResult } from "./types";
 
 export function validateSchemaValue<TValue>(schema: BlockSchema<TValue>, value: unknown): ValidationResult {
@@ -28,7 +28,9 @@ function validateFields(fields: BlockField[], value: unknown, prefix: string): V
   const issues: ValidationIssue[] = [];
   const source = isRecord(value) ? value : {};
 
-  for (const field of fields) {
+  // Les conteneurs `row`/`tabs` ne portent pas de donnees: on valide leurs
+  // enfants a plat au meme niveau.
+  for (const field of flattenDataFields(fields)) {
     const fieldPath = prefix ? `${prefix}.${field.name}` : field.name;
     const fieldValue = source[field.name];
 
@@ -84,8 +86,15 @@ function validateFields(fields: BlockField[], value: unknown, prefix: string): V
       continue;
     }
 
-    if ((field.type === "select" || field.type === "radio") && field.options?.length) {
-      const allowedValues = field.options.map((option) => option.value);
+    const enumOptions =
+      field.type === "select" ||
+      field.type === "radio" ||
+      field.type === "alignment" ||
+      field.type === "textalign"
+        ? field.options ?? defaultFieldOptions(field.type)
+        : undefined;
+    if (enumOptions?.length) {
+      const allowedValues = enumOptions.map((option) => option.value);
       if (!allowedValues.includes(fieldValue as string)) {
         issues.push({
           path: fieldPath,
