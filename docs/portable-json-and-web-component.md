@@ -3,7 +3,7 @@
 Le projet a deux formats de sortie principaux:
 
 1. le `PageDocument` complet
-2. le JSON portable "flat block" inspire de `ciklik/visual-editor`
+2. le JSON portable "flat block"
 
 Le web component `@n-ramos/celebrimbor-editor-element` permet d'embarquer le builder hors React tout en gardant l'un ou l'autre de ces formats.
 

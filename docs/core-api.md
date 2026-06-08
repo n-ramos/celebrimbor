@@ -153,4 +153,4 @@ const doc = templates.instantiate("landing");
 ## Serialisation
 
 - `serializeDocument` / `deserializeDocument` : JSON complet et fidele du `PageDocument`.
-- `serializePortableDocument` / `deserializePortableDocument` : format plat agnostique (`_name`, `_id`, `_settings`, `_visible`, `_children` + champs de contenu a plat), inspire de `ciklik/visual-editor`. Voir la limitation sur les collisions de cles dans [`portable-json-and-web-component.md`](./portable-json-and-web-component.md).
+- `serializePortableDocument` / `deserializePortableDocument` : format plat agnostique (`_name`, `_id`, `_settings`, `_visible`, `_children` + champs de contenu a plat). Voir la limitation sur les collisions de cles dans [`portable-json-and-web-component.md`](./portable-json-and-web-component.md).

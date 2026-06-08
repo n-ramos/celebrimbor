@@ -117,7 +117,7 @@ Fonctionnalités :
 - enregistrement d'un custom element `my-page-builder`
 - montage du builder React dans une page HTML sans framework hôte
 - synchronisation d'un champ cache JSON via l'attribut `name`
-- emission par defaut d'un tableau JSON portable a plat, inspire de `ciklik/visual-editor`
+- emission par defaut d'un tableau JSON portable a plat
 - dispatch des événements `my-page-builder:change` et `my-page-builder:save`
 - stylesheet réexportée via `@n-ramos/celebrimbor-editor-element/styles.css`
 
