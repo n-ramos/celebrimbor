@@ -43,12 +43,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # `prepublishOnly` (pnpm build) rebuilds the bundle from source before
-      # packing, so the published dist always matches the tagged commit.
-      # --no-git-checks is required: a tag checkout is a detached HEAD, which
-      # pnpm's default publish git checks would reject.
+      # Publish from the package directory, not via `--filter`: pnpm's recursive/
+      # filtered publish does a registry version check that can wrongly decide
+      # "no new packages should be published". A direct publish always runs.
+      # `prepublishOnly` (pnpm build) rebuilds the bundle from source first, so
+      # the published dist matches the tagged commit; pnpm rewrites the
+      # `workspace:*` specifiers on the way out. --no-git-checks is required
+      # because a tag checkout is a detached HEAD.
       - name: Publish @n-ramos/celebrimbor-embed
-        run: pnpm --filter @n-ramos/celebrimbor-embed publish --access public --no-git-checks
+        working-directory: apps/embed
+        run: pnpm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: "true"
