@@ -1,0 +1,76 @@
+{
+  "name": "@n-ramos/celebrimbor-symfony",
+  "version": "0.1.0",
+  "description": "Symfony UX / Stimulus adapter for the Celebrimbor headless page builder. Ships a block-agnostic Stimulus controller plus helpers to wire the <my-page-builder> web component and its live preview into a Symfony app via AssetMapper/importmap. No blocks are bundled — you bring your own registry.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n-ramos/celebrimbor.git",
+    "directory": "packages/adapters/symfony-ux"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./controller": {
+      "types": "./dist/controller.d.ts",
+      "import": "./dist/controller.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "symfony": {
+    "controllers": {
+      "page-builder": {
+        "main": "dist/controller.js",
+        "name": "celebrimbor--page-builder",
+        "fetch": "eager",
+        "enabled": true,
+        "autoimport": {
+          "@n-ramos/celebrimbor-symfony/styles.css": true
+        }
+      }
+    },
+    "importmap": {
+      "@hotwired/stimulus": "^3.0.0",
+      "react": "^19.1.0",
+      "react-dom": "^19.1.0"
+    }
+  },
+  "scripts": {
+    "build": "tsup --config tsup.config.ts && cp ../../editor-element/dist/styles.css dist/styles.css",
+    "lint": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "@hotwired/stimulus": "^3.0.0"
+  },
+  "dependencies": {
+    "@n-ramos/celebrimbor-core": "workspace:*",
+    "@n-ramos/celebrimbor-editor-element": "workspace:*",
+    "@n-ramos/celebrimbor-editor-react": "workspace:*",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "tsup": "^8.5.0"
+  }
+}

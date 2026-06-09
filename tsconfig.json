@@ -5,6 +5,8 @@
     "paths": {
       "@n-ramos/celebrimbor-core": ["packages/core/src/index.ts"],
       "@n-ramos/celebrimbor-editor-react": ["packages/editor-react/src/index.ts"],
+      "@n-ramos/celebrimbor-editor-element": ["packages/editor-element/src/index.tsx"],
+      "@n-ramos/celebrimbor-symfony": ["packages/adapters/symfony-ux/src/index.ts"],
       "@n-ramos/celebrimbor-blocks-basic": ["packages/blocks/basic/src/index.ts"],
       "@n-ramos/celebrimbor-adapter-rest": ["packages/adapters/rest/src/index.ts"],
       "@n-ramos/celebrimbor-adapter-local-storage": ["packages/adapters/local-storage/src/index.ts"],
