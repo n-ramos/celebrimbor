@@ -17,8 +17,9 @@ Cette documentation couvre la partie developpeur du page builder:
 4. [Creer un bloc](./creating-blocks.md)
 5. [Portable JSON et web component](./portable-json-and-web-component.md)
 6. [Integrer la lib dans Laravel](./laravel-integration.md)
-7. [Editeur Vue](./vue-integration.md)
-8. [Analyse et recommandations](./analysis-and-recommendations.md)
+7. [Integrer la lib dans Symfony](./symfony-integration.md)
+8. [Editeur Vue](./vue-integration.md)
+9. [Analyse et recommandations](./analysis-and-recommendations.md)
 
 ## Parcours recommande
 
@@ -29,6 +30,7 @@ Si tu decouvres le projet:
 3. Lis [Creer un bloc](./creating-blocks.md) pour construire tes propres blocs.
 4. Lis [Portable JSON et web component](./portable-json-and-web-component.md) pour exposer le builder hors React et conserver un format agnostique.
 5. Lis [Integrer la lib dans Laravel](./laravel-integration.md) si ton back-office ou ton CMS tourne sur Laravel / Filament.
+6. Lis [Integrer la lib dans Symfony](./symfony-integration.md) si ton projet tourne sur Symfony (UX / Stimulus / AssetMapper).
 
 ## Packages concernes
 

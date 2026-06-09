@@ -45,6 +45,7 @@ La documentation detaillee est dans [`docs/`](./docs/README.md) :
 - [Creer un bloc](./docs/creating-blocks.md)
 - [Portable JSON et web component](./docs/portable-json-and-web-component.md)
 - [Integrer la lib dans Laravel](./docs/laravel-integration.md)
+- [Integrer la lib dans Symfony](./docs/symfony-integration.md)
 - [Editeur Vue](./docs/vue-integration.md)
 - [Analyse et recommandations](./docs/analysis-and-recommendations.md)
 
