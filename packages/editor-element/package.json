@@ -1,6 +1,7 @@
 {
   "name": "@n-ramos/celebrimbor-editor-element",
   "version": "0.1.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/n-ramos/celebrimbor.git",
@@ -18,7 +19,9 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsup --config tsup.config.ts && cp ../editor-react/dist/styles.css dist/styles.css",
