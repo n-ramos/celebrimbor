@@ -1,0 +1,26 @@
+<?php
+
+// src/CelebrimborServiceProvider.php
+
+namespace NRamos\Celebrimbor\Filament;
+
+use Filament\Support\Assets\Css;
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
+use Illuminate\Support\ServiceProvider;
+
+class CelebrimborServiceProvider extends ServiceProvider
+{
+    public function boot(): void
+    {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'celebrimbor');
+
+        // The editor bundle ships INSIDE this Composer package (resources/dist).
+        // No CDN, no manual copy: `php artisan filament:assets` publishes these
+        // to public/ with a content hash, and Filament injects them on its pages.
+        FilamentAsset::register([
+            Js::make('celebrimbor', __DIR__ . '/../resources/dist/celebrimbor.iife.js'),
+            Css::make('celebrimbor', __DIR__ . '/../resources/dist/celebrimbor.css'),
+        ], package: 'n-ramos/celebrimbor-filament');
+    }
+}

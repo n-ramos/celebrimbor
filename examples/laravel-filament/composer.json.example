@@ -1,0 +1,24 @@
+{
+  "name": "n-ramos/celebrimbor-filament",
+  "description": "Filament field + bundled assets for the Celebrimbor headless page builder.",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": "^8.2",
+    "filament/filament": "^3.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "NRamos\\Celebrimbor\\Filament\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "NRamos\\Celebrimbor\\Filament\\CelebrimborServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}

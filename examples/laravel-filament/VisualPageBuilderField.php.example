@@ -1,17 +1,28 @@
 <?php
 
-namespace App\Filament\Forms\Components;
+// src/Forms/Components/VisualPageBuilderField.php
+
+namespace NRamos\Celebrimbor\Filament\Forms\Components;
 
 use Filament\Forms\Components\Field;
 
 class VisualPageBuilderField extends Field
 {
-    protected string $view = 'filament.forms.components.visual-page-builder-field';
+    protected string $view = 'celebrimbor::visual-page-builder-field';
 
-    public function blocksPreset(string $preset): static
+    // Serialised format posted back by <my-page-builder>: "portable" (flat array)
+    // or "document" (full PageDocument). Defaults to portable.
+    protected string $documentFormat = 'portable';
+
+    public function documentFormat(string $format): static
     {
-        return $this->extraAttributes([
-            'data-blocks-preset' => $preset,
-        ]);
+        $this->documentFormat = $format;
+
+        return $this;
+    }
+
+    public function getDocumentFormat(): string
+    {
+        return $this->documentFormat;
     }
 }

@@ -300,7 +300,14 @@ L'exemple d'intégration montre que Laravel ne stocke que :
 
 Les blocs restent définis côté JavaScript / TypeScript.
 
-Voir `examples/laravel-filament/README.md` et `packages/adapters/laravel-filament/src/index.ts`.
+Côté Filament, le chemin recommandé est un **plugin Composer/Packagist** qui embarque le bundle de l'éditeur (`@n-ramos/celebrimbor-embed`) et l'enregistre via `FilamentAsset` — donc hors-ligne, versionné avec le `composer require`, sans CDN :
+
+```bash
+composer require n-ramos/celebrimbor-filament
+php artisan filament:assets
+```
+
+Le bundle reste aussi consommable par **CDN** ou **npm** pour un hôte HTML quelconque. Détails et squelette du plugin : [Monter l'éditeur dans Filament](./docs/laravel-integration.md#monter-lediteur-dans-filament) et [`examples/laravel-filament/`](./examples/laravel-filament/README.md). Voir aussi `packages/adapters/laravel-filament/src/index.ts`.
 
 ## Roadmap
 

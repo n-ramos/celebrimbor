@@ -149,9 +149,104 @@ En Laravel pur:
 - `portable` est souvent le meilleur choix si ton backend ne fait que stocker
 - `document` est souvent le meilleur choix si tu veux brancher plus de meta ou d'operations internes
 
-## Filament: integration minimale
+## Monter l'editeur dans Filament
 
-Le repo contient deja une base d'integration ici:
+L'editeur est distribue comme un **bundle web component autonome**
+(`@n-ramos/celebrimbor-embed`) qui enregistre l'element `<my-page-builder>`.
+Tu n'as donc qu'a charger un JS + un CSS, puis poser la balise.
+
+### Charger le bundle
+
+Trois options, de la plus integree (recommandee) a la plus manuelle:
+
+**1. Package Composer / Packagist (recommande pour Filament)** — un plugin
+Composer embarque le bundle dans ses `resources/dist/` et l'enregistre lui-meme.
+Cote hote, tout tient en:
+
+```bash
+composer require n-ramos/celebrimbor-filament
+php artisan filament:assets
+```
+
+Le plugin appelle, dans son service provider:
+
+```php
+use Filament\Support\Facades\FilamentAsset;
+use Filament\Support\Assets\Css;
+use Filament\Support\Assets\Js;
+
+FilamentAsset::register([
+    // fichiers embarques DANS le package Composer (pas de CDN)
+    Js::make('celebrimbor', __DIR__ . '/../resources/dist/celebrimbor.iife.js'),
+    Css::make('celebrimbor', __DIR__ . '/../resources/dist/celebrimbor.css'),
+], package: 'n-ramos/celebrimbor-filament');
+```
+
+Avantages: hors-ligne, **versionne avec le `composer require`** (pas de derive),
+publie/hashé par `php artisan filament:assets`, et le plugin fournit aussi le
+champ `VisualPageBuilderField`. Squelette complet du package:
+[examples/laravel-filament/](/Users/nra/Documents/Celebrimbor/examples/laravel-filament/README.md).
+
+**2. CDN** — pas de package PHP a maintenir, pratique pour un proto ou un hote
+non-Filament. Via un render hook:
+
+```php
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\HtmlString;
+
+FilamentView::registerRenderHook(
+    PanelsRenderHook::HEAD_END,
+    fn (): string => new HtmlString(<<<'HTML'
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@n-ramos/celebrimbor-embed@0.1/dist/celebrimbor.css">
+        <script src="https://cdn.jsdelivr.net/npm/@n-ramos/celebrimbor-embed@0.1/dist/celebrimbor.iife.js"></script>
+    HTML),
+);
+```
+
+Contrepartie: dependance a un service externe et URL versionnee a la main.
+
+**3. Self-host / offline sans package** — copie le bundle dans `public/`:
+
+```bash
+LARAVEL_PUBLIC=/chemin/vers/ton-app/public \
+  pnpm --filter @n-ramos/celebrimbor-embed build:laravel
+# -> public/vendor/celebrimbor/{celebrimbor.iife.js, celebrimbor.js, celebrimbor.css}
+```
+
+puis charge `asset('vendor/celebrimbor/celebrimbor.iife.js')` / `.css` via un render hook.
+
+### Poser l'element
+
+Une fois le bundle charge, l'element `<my-page-builder>` est disponible partout.
+Dans la vue Blade de ton champ Filament:
+
+```blade
+<x-dynamic-component :component="$getFieldWrapperView()" :field="$field">
+    <div wire:ignore>
+        <my-page-builder
+            name="{{ $getStatePath() }}"
+            format="portable"
+            value="{{ $getState() ? json_encode($getState()) : '[]' }}"
+            class="block min-h-[600px]"
+        ></my-page-builder>
+    </div>
+</x-dynamic-component>
+```
+
+L'element synchronise un `<textarea name="...">` cache (l'attribut `name`), donc
+le submit Filament/Livewire recupere la valeur comme n'importe quel champ. Il
+emet aussi `my-page-builder:change` / `my-page-builder:save` si tu veux brancher
+du Livewire plus fin.
+
+> Champs `custom`, registre `customFields` et blocs maison: voir
+> [Champs custom dans l'editeur Filament](#champs-custom-dans-lediteur-filament).
+> Ils se configurent dans le `main.ts` du bundle (puis republie/rebuild), pas cote PHP.
+
+## Filament: integration minimale (variante Livewire avancee)
+
+Le repo contient aussi une base d'integration pilotee par evenement (utile si tu
+veux monter l'editeur toi-meme via Livewire/Alpine plutot que la balise directe):
 
 - [examples/laravel-filament/VisualPageBuilderField.php.example](/Users/nra/Documents/Celebrimbor/examples/laravel-filament/VisualPageBuilderField.php.example)
 - [examples/laravel-filament/visual-page-builder-field.blade.php.example](/Users/nra/Documents/Celebrimbor/examples/laravel-filament/visual-page-builder-field.blade.php.example)

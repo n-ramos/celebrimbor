@@ -1,20 +1,17 @@
+{{-- resources/views/visual-page-builder-field.blade.php --}}
 <x-dynamic-component
     :component="$getFieldWrapperView()"
     :field="$field"
 >
-    <div
-        wire:ignore
-        x-data
-        x-init="
-            window.dispatchEvent(new CustomEvent('my-page-builder:init', {
-                detail: {
-                    statePath: @js($getStatePath()),
-                    value: @js($getState()),
-                    preset: $el.dataset.blocksPreset,
-                }
-            }))
-        "
-        data-blocks-preset="{{ $getExtraAttributes()['data-blocks-preset'] ?? 'marketing' }}"
-        class="min-h-[600px]"
-    ></div>
+    {{-- The <my-page-builder> element is provided by the bundle this package
+         registers via FilamentAsset (resources/dist). It syncs a hidden
+         <textarea name="..."> so Livewire/Filament picks the value up on submit. --}}
+    <div wire:ignore>
+        <my-page-builder
+            name="{{ $getStatePath() }}"
+            format="{{ $getDocumentFormat() }}"
+            value="{{ filled($getState()) ? json_encode($getState()) : '[]' }}"
+            class="block min-h-[600px]"
+        ></my-page-builder>
+    </div>
 </x-dynamic-component>
