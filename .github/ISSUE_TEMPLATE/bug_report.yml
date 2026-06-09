@@ -1,0 +1,59 @@
+name: 🐛 Rapport de bug
+description: Signaler un comportement incorrect
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de prendre le temps de signaler un bug. Renseigne un maximum de détails pour reproduire le problème.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Que se passe-t-il ? Quel est le comportement attendu vs observé ?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Étapes de reproduction
+      description: Liste les étapes ou fournis un cas minimal reproductible.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: json
+    attributes:
+      label: JSON du document (si pertinent)
+      description: Colle l'extrait de document JSON qui déclenche le bug.
+      render: json
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package concerné
+      multiple: true
+      options:
+        - "@n-ramos/celebrimbor-core"
+        - "@n-ramos/celebrimbor-editor-react"
+        - "@n-ramos/celebrimbor-editor-vue"
+        - "@n-ramos/celebrimbor-editor-element"
+        - "@n-ramos/celebrimbor-blocks-basic"
+        - "adapters (local-storage / rest / laravel-filament)"
+        - "embed"
+        - "Je ne sais pas"
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Version du package (ou commit) utilisée.
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Environnement
+      description: Node, navigateur, framework UI, OS…

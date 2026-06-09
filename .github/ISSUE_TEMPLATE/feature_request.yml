@@ -1,0 +1,36 @@
+name: ✨ Demande de fonctionnalité
+description: Proposer une nouvelle fonctionnalité ou amélioration
+title: "[Feat] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problème / besoin
+      description: Quel problème cette fonctionnalité résout-elle ? Quel est le cas d'usage ?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solution envisagée
+      description: Décris le comportement souhaité ou l'API proposée.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considérées
+      description: Autres approches que tu as envisagées.
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact sur le format JSON du document
+      description: Le format JSON doit rester stable et rétrocompatible.
+      options:
+        - "Aucun"
+        - "Additif (rétrocompatible)"
+        - "Cassant (à discuter)"
+        - "Je ne sais pas"
+    validations:
+      required: true
