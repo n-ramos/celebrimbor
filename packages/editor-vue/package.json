@@ -1,6 +1,11 @@
 {
   "name": "@n-ramos/celebrimbor-editor-vue",
   "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n-ramos/celebrimbor.git",
+    "directory": "packages/editor-vue"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

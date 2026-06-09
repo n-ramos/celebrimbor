@@ -1,6 +1,11 @@
 {
   "name": "@n-ramos/celebrimbor-adapter-rest",
   "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n-ramos/celebrimbor.git",
+    "directory": "packages/adapters/rest"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

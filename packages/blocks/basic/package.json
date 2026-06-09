@@ -1,6 +1,11 @@
 {
   "name": "@n-ramos/celebrimbor-blocks-basic",
   "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n-ramos/celebrimbor.git",
+    "directory": "packages/blocks/basic"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

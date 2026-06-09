@@ -1,6 +1,11 @@
 {
   "name": "@n-ramos/celebrimbor-editor-element",
   "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n-ramos/celebrimbor.git",
+    "directory": "packages/editor-element"
+  },
   "type": "module",
   "exports": {
     ".": {
